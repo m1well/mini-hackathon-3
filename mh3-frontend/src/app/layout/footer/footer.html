@@ -1,0 +1,33 @@
+<div
+  class="w-full p-3 bg-slate-800 text-slate-200 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2"
+>
+  <div class="flex flex-row items-center gap-2">
+    <span class="font-semibold">version:</span>
+    <span
+      class="px-2 py-0.5 rounded bg-slate-700 text-slate-100"
+    >
+      {{ util.value()?.version }}
+    </span>
+
+    <span
+      class="text-slate-400"
+    >
+      ({{ util.value()?.time | date: 'yyyy-MM-dd' }})
+    </span>
+  </div>
+
+  <div class="flex flex-row items-center gap-2">
+    <span class="font-semibold">stage:</span>
+
+    <span
+      [class]="{
+        'bg-green-600': util.value()?.stage === 'PROD',
+        'bg-yellow-600': util.value()?.stage === 'DEV',
+        'bg-blue-600': util.value()?.stage === 'LOCAL'
+      }"
+      class="px-2 py-0.5 rounded text-white"
+    >
+      {{ util.value()?.stage }}
+    </span>
+  </div>
+</div>

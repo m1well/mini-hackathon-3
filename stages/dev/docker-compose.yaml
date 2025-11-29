@@ -1,0 +1,45 @@
+services:
+
+  mariadb:
+    image: mariadb:12.1.2
+    container_name: mariadb
+    hostname: mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: hackathon-db
+      MYSQL_USER: dbadmin
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      TZ: Europe/Berlin
+    ports:
+      - '3306:3306'
+    networks:
+      - mh3-dev-net
+
+  mh3-backend:
+    build: ../../mh3-backend/
+    container_name: mh3-backend
+    hostname: mh3-backend
+    restart: on-failure
+    ports:
+      - 8087:8087
+    environment:
+      STAGE: dev
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/hackathon-db
+      APP_CORS_ORIGIN: http://localhost:8080
+    networks:
+      - mh3-dev-net
+
+  mh3-frontend:
+    build: ../../mh3-frontend/
+    container_name: mh3-frontend
+    hostname: mh3-frontend
+    restart: on-failure
+    ports:
+      - 8080:80
+    networks:
+      - mh3-dev-net
+
+networks:
+  mh3-dev-net:
+    driver: bridge

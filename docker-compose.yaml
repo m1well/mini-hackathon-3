@@ -1,0 +1,21 @@
+services:
+
+  mariadb:
+    image: mariadb:12.1.2
+    container_name: mariadb
+    hostname: mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: hackathon-db
+      MYSQL_USER: dbadmin
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      TZ: Europe/Berlin
+    ports:
+      - '3306:3306'
+    networks:
+      - mh3-local-net
+
+networks:
+  mh3-local-net:
+    driver: bridge

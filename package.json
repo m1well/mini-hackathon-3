@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "backend:start": "echo \"starting backend...\" && cd mh3-backend && chmod +x mvnw && ./mvnw spring-boot:run",
+    "backend:build": "echo \"building backend...\" && cd mh3-backend && chmod +x mvnw && ./mvnw clean package",
+    "frontend:start": "echo \"starting frontend...\" && cd mh3-frontend && npm start",
+    "frontend:build-dev": "echo \"building frontend...\" && cd mh3-frontend && rm -rf dist && npm run build:dev",
+    "frontend:build-prod": "echo \"building frontend...\" && cd mh3-frontend && rm -rf dist && npm run build:prod",
+    "localdb:up": "echo \"docker compose UP...\" && docker compose up -d",
+    "localdb:down": "echo \"docker compose DOWN...\" && docker compose down",
+    "devstage:up": "echo \"docker compose UP...\" && cd stages/dev/ && docker compose up -d --build",
+    "devstage:down": "echo \"docker compose DOWN...\" && cd stages/dev/ && docker compose down",
+    "docker:check": "echo \"check docker container\" && docker ps -a"
+  }
+}
