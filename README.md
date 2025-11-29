@@ -8,6 +8,7 @@ Unsere Interpretation des MiniHackathon 3.0
 - Angular 21 mit Tailwind CSS
 - MariaDB
 - Docker
+- Github Actions
 
 ## Lokales Setup
 
