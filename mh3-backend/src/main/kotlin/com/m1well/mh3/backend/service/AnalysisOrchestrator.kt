@@ -17,34 +17,43 @@ class AnalysisOrchestrator(
     @Value("\${spring.ai.openai.api-key:}") private val openaiApikey: String
 ) {
 
-    fun startAnalysis(userCode: String, request: JobAnalyzeRequestDto): AnalysisResultDto? {
+    fun startAnalysis(userCode: String, dto: JobAnalyzeRequestDto): AnalysisResultDto? {
         val userFromDb = userService.getUserForCode(userCode)
 
-        try {
-            // webscraping with given url
-            val rawText = webScraper.fetchTextFromUrl(request.url)
-            logger.info { "Webscraping successfull - characters: ${rawText.chars().count()}" }
+        var textToAnalyze: String
 
-            // shorten the text for safety reasons (safe some tokens if needed)
-            val sanitizedText = rawText.take(12_000)
+        val analyzedViaUrl = isAnalyzeModeUrl(dto)
 
-            if (openaiApikey.isBlank() || openaiApikey.equals("dummy")) {
-                logger.info { "Mock result because openai apikey not available...." }
-                return createMockResult()
-            } else {
-                return openAiService.fireAiRequest(sanitizedText, userFromDb)
+        if (analyzedViaUrl) {
+            try {
+                // webscraping with given url
+                val rawText = webScraper.fetchTextFromUrl(dto.url!!)
+                logger.info { "Webscraping successfull - characters: ${rawText.chars().count()}" }
+
+                // shorten the text for safety reasons (safe some tokens if needed)
+                textToAnalyze = rawText.take(12_000)
+            } catch (e: IllegalArgumentException) {
+                logger.error { "Error during webscraping..." }
+                throw WebScrapingException("Fehler beim Webscraping - diese URL kann leider nicht verarbeitet werden!")
             }
-        } catch (e: IllegalArgumentException) {
-            logger.error { "Error during webscraping..." }
-            throw WebScrapingException("Fehler beim Webscraping - diese URL kann leider nicht verarbeitet werden!")
+        } else {
+            textToAnalyze = dto.manualText!!
+        }
+
+        if (openaiApikey.isBlank() || openaiApikey.equals("dummy")) {
+            logger.info { "Mock result because openai apikey not available...." }
+            return createMockResult(analyzedViaUrl, dto.url)
+        } else {
+            return openAiService.fireAiRequest(textToAnalyze, analyzedViaUrl, dto.url, userFromDb)
         }
     }
 
-    private fun createMockResult(): AnalysisResultDto {
+    private fun createMockResult(analyzedViaUrl: Boolean, url: String?): AnalysisResultDto {
         return AnalysisResultDto(
             uniqueKey = "",
             title = "Softeare Developer",
             company = "Mustermann AG",
+            analyzedViaUrl = analyzedViaUrl,
             location = "Stuttgart",
             summary = """
                 [MOCK] Dies ist eine simulierter Zusammenfassung. Wir suchen einen Senior Developer der Kotlin mag.
@@ -61,8 +70,13 @@ class AnalysisOrchestrator(
             culture = "",
             salaryRange = null,
             matchScore = 80,
-            matchReasoning = "[MOCK] Passt super, weil Mock-Daten immer passen :)"
+            matchReasoning = "[MOCK] Passt super, weil Mock-Daten immer passen :)",
+            urlJob = url,
         )
+    }
+
+    private fun isAnalyzeModeUrl(dto: JobAnalyzeRequestDto) = dto.run {
+        !url.isNullOrBlank() && manualText.isNullOrBlank()
     }
 
 }

@@ -37,9 +37,9 @@ Unsere Interpretation des MiniHackathon 3.0
 
 ### Job (überall uniqueCode von User benötigt)
 
-1. Job analysieren 
+1. Job analysieren (entweder über eine URL oder über einen selbst kopierten Text)
 2. Analysierter Job speichern
-3. Job anpassen (aktuell Urls)
+3. Job anpassen (aktuell nur Urls)
 4. Alle Jobs auflisten
 
 ## Maintainer

@@ -4,6 +4,7 @@ data class AnalysisResultDto(
     val uniqueKey: String,
     val title: String,
     val company: String,
+    var analyzedViaUrl: Boolean,
     val location: String,
     val summary: String,
     val techstack: List<String>,
@@ -15,4 +16,5 @@ data class AnalysisResultDto(
     val salaryRange: String?,
     val matchScore: Int,
     val matchReasoning: String,
+    var urlJob: String?,
 )

@@ -23,6 +23,7 @@ class Mapper {
             uniqueKey = dto.uniqueKey,
             title = dto.title,
             company = dto.company,
+            analyzedViaUrl = dto.analyzedViaUrl,
             location = dto.location,
             summary = dto.summary,
             techstack = dto.techstack,
@@ -34,6 +35,7 @@ class Mapper {
             salaryRange = dto.salaryRange,
             matchScore = dto.matchScore,
             matchReasoning = dto.matchReasoning,
+            urlJob = dto.urlJob,
             urlCompany = dto.urlCompany,
             urlCompanyLogo = dto.urlCompanyLogo,
             urlKununu = dto.urlKununu,
@@ -49,6 +51,7 @@ class Mapper {
         }
 
         fun toUpdateEntity(dto: JobUpdateRequestDto, existing: JobEntity): JobEntity {
+            existing.urlJob = dto.urlJob
             existing.urlCompany = dto.urlCompany
             existing.urlCompanyLogo = dto.urlCompanyLogo
             existing.urlKununu = dto.urlKununu
@@ -69,6 +72,7 @@ class Mapper {
             uniqueKey = entity.uniqueKey,
             title = entity.title,
             company = entity.company,
+            analyzedViaUrl = entity.analyzedViaUrl,
             location = entity.location,
             summary = entity.summary,
             techstack = entity.techstack,
@@ -80,6 +84,7 @@ class Mapper {
             salaryRange = entity.salaryRange,
             matchScore = entity.matchScore,
             matchReasoning = entity.matchReasoning,
+            urlJob = entity.urlJob,
             urlCompany = entity.urlCompany,
             urlCompanyLogo = entity.urlCompanyLogo,
             urlKununu = entity.urlKununu,
