@@ -22,23 +22,30 @@ class OpenAiService(val chatClientBuilder: ChatClient.Builder) {
     @Value("classpath:prompts/systemMessageTemplate.st")
     private lateinit var systemMessageTemplate: Resource
 
-    fun fireAiRequest(jobDescriptionChaos: String, user: UserViewResponseDto): AnalysisResultDto? {
+    fun fireAiRequest(
+        job: String,
+        analyzedViaUrl: Boolean,
+        url: String?,
+        dto: UserViewResponseDto
+    ): AnalysisResultDto? {
         val promptParams: HashMap<String, Any> = hashMapOf(
-            "currentJobTitle" to user.currentJobTitle,
-            "experienceYears" to user.experienceYears,
-            "mainTechStack" to (user.techstack?.joinToString(",") ?: "Keine Angaben"),
-            "preferences" to user.preferences,
-            "job" to jobDescriptionChaos
+            "currentJobTitle" to dto.currentJobTitle,
+            "experienceYears" to dto.experienceYears,
+            "mainTechStack" to (dto.techstack?.joinToString(",") ?: "Keine Angaben"),
+            "preferences" to dto.preferences,
+            "job" to job
         )
         val userMessage = PromptTemplate(userMessageTemplate).createMessage(promptParams)
         val systemMessage = SystemPromptTemplate(systemMessageTemplate).createMessage()
 
-        logger.info { jobDescriptionChaos }
-
-        return chatClientBuilder.build()
+        val result = chatClientBuilder.build()
             .prompt(Prompt(listOf(userMessage, systemMessage)))
             .call()
             .entity(AnalysisResultDto::class.java)
+
+        result?.analyzedViaUrl = analyzedViaUrl
+        result?.urlJob = url
+        return result
     }
 
 }

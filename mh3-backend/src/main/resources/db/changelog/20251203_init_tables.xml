@@ -41,6 +41,9 @@
             <column name="company" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
+            <column name="analyzed_via_url" type="TINYINT">
+                <constraints nullable="false"/>
+            </column>
             <column name="location" type="VARCHAR(50)"/>
             <column name="summary" type="VARCHAR(800)"/>
             <column name="tasks" type="VARCHAR(300)"/>
@@ -51,6 +54,7 @@
             <column name="salary_range" type="VARCHAR(100)"/>
             <column name="match_score" type="TINYINT"/>
             <column name="match_reasoning" type="VARCHAR(500)"/>
+            <column name="url_job" type="VARCHAR(100)"/>
             <column name="url_company" type="VARCHAR(100)"/>
             <column name="url_company_logo" type="VARCHAR(300)"/>
             <column name="url_kununu" type="VARCHAR(100)"/>

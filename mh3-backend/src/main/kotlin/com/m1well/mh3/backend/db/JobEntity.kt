@@ -26,6 +26,9 @@ class JobEntity(
     @Column(nullable = false)
     val company: String,
 
+    @Column(nullable = false)
+    val analyzedViaUrl: Boolean,
+
     val location: String?,
     val summary: String,
     val tasks: String,
@@ -36,6 +39,7 @@ class JobEntity(
     val salaryRange: String?,
     val matchScore: Int,
     val matchReasoning: String,
+    var urlJob: String?,
     var urlCompany: String?,
     var urlCompanyLogo: String?,
     var urlKununu: String?,

@@ -21,18 +21,18 @@ class JobService(private val repo: JobRepo, private val userService: UserService
         return repo.findAllByUserCode(userCode).map { Mapper.toDto(it) }
     }
 
-    fun saveJob(userCode: String, request: JobSaveRequestDto): JobViewResponseDto {
+    fun saveJob(userCode: String, dto: JobSaveRequestDto): JobViewResponseDto {
         val userExist = userService.getUserForCode(userCode)
-        val saved = repo.save(Mapper.toNewEntity(userCode, request))
+        val saved = repo.save(Mapper.toNewEntity(userCode, dto))
         return Mapper.toDto(saved)
     }
 
     @Transactional
-    fun updateJob(userCode: String, request: JobUpdateRequestDto): JobViewResponseDto {
+    fun updateJob(userCode: String, dto: JobUpdateRequestDto): JobViewResponseDto {
         val userExist = userService.getUserForCode(userCode)
-        val job = repo.findByUniqueKey(request.uniqueKey)?.let { Mapper.toUpdateEntity(request, it) }
-            ?: throw JobNotFoundException("Job with unique key ${request.uniqueKey} not found!")
-                .also { logger.error { "Job with unique key ${request.uniqueKey} not found!" } }
+        val job = repo.findByUniqueKey(dto.uniqueKey)?.let { Mapper.toUpdateEntity(dto, it) }
+            ?: throw JobNotFoundException("Job with unique key ${dto.uniqueKey} not found!")
+                .also { logger.error { "Job with unique key ${dto.uniqueKey} not found!" } }
 
         if (job.userCode != userCode) {
             throw ForbiddenException("You are not allowed to change this job!")
