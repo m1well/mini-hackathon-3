@@ -6,20 +6,29 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [],
   templateUrl: './startpage.html',
-  styleUrls: ['./startpage.css']
+  styleUrl: './startpage.css'
 })
 export class Startpage {
+
   constructor(private router: Router) {}
 
-  start() {
+  ngOnInit(): void {
+    const uid = localStorage.getItem('uid');
+
+    if (uid) {
+      // Wenn UID existiert → direkt weiterleiten
+      this.router.navigate(['/dashboard']);
+    }
+  }
+
+  start(): void {
     const input = document.getElementById('userID') as HTMLInputElement;
 
-    if (input && input.value.trim() !== '') {
-      const uid = input.value.trim();
-      localStorage.setItem('uid', uid);
-      this.router.navigate(['/dashboard']);
-    } else {
-      alert('Bitte gib eine UserID ein!');
+    if (!input || !input.value.trim()) {
+      return;
     }
+
+    localStorage.setItem('uid', input.value.trim());
+    this.router.navigate(['/dashboard']);
   }
 }

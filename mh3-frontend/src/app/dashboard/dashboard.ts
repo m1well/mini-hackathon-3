@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './dashboard.css'
 })
 export class Dashboard {
+  toggleDetails() {
+  const detail = document.getElementById("detailSection");
+  detail?.classList.toggle("hidden");
+}
 
 }

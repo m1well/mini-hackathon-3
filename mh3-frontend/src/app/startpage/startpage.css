@@ -1,4 +1,4 @@
-#userID{
+/* #userID{
     background-color: lightgray;
     border-radius: 4px;
     height: 40px;
@@ -25,4 +25,11 @@ button{
     margin-top: 30px;
     display: flex;
     justify-content: space-between;
+} */
+
+
+
+.startpage{
+    height: 320px;
+    border-radius: 10px;
 }

@@ -1,3 +1,50 @@
-<div class="profilHead"><input type="text" id="skillInput" placeholder="skill"><button (click)="addSkill">Hinzufügen</button></div>
+<div class="max-w-3xl mx-auto p-6 space-y-10 profil">
 
-<div class="flex skillRow"><h3 class="skillText">Angular</h3><input type="checkbox" name="Fav" id="1"><button class="delete">X</button></div>
+  <!-- Abschnitt: Skill hinzufügen (immer oben) -->
+  <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4 sticky top-0 z-10">
+
+    <h2 class="text-2xl text-white font-semibold">Neuer Skill hinzufügen</h2>
+
+    <div class="flex gap-3">
+      <input
+        type="text"
+        placeholder="Enter a skill, e.g. Angular"
+        class="flex-1 p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none"
+        id="newSkill"
+      />
+
+      <button
+        class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 rounded-lg transition"
+      >
+        Hinzufügen
+      </button>
+    </div>
+  </section>
+
+  <!-- Trennung -->
+  <div class="border-t border-gray-700"></div>
+
+  <!-- Abschnitt: Skill-Liste (kann leer sein) -->
+  <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
+    <h2 class="text-2xl text-white font-semibold">Ihre Skills</h2>
+
+    <div class="space-y-3" id="skillList">
+
+      <!-- Placeholder wird nur angezeigt, wenn Liste leer -->
+      <p class="text-gray-400 italic">Noch keine Skills hinzugefügt.</p>
+
+      <!-- Beispiel-Eintrag (nur Beispiel) -->
+      <!-- 
+      <div class="flex items-center justify-between bg-gray-700 p-3 rounded-lg">
+        <div class="flex items-center gap-3">
+          <input type="checkbox" class="w-4 h-4" />
+          <span class="text-white">Example Skill</span>
+        </div>
+        <button class="text-red-400 hover:text-red-600 text-xl font-bold px-2">×</button>
+      </div>
+      -->
+
+    </div>
+  </section>
+
+</div>

@@ -1,0 +1,80 @@
+<div class="max-w-3xl mx-auto p-6 space-y-10">
+
+  <!-- Abschnitt 1: URL Input -->
+  <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
+    <h2 class="text-2xl text-white font-semibold">Stellenangebot über URL</h2>
+
+    <label class="block text-gray-300 text-sm">URL des Stellenangebots</label>
+    <input 
+      type="text"
+      placeholder="https://example.com/job123"
+      class="w-full p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none"
+      id="jobUrl"
+    />
+
+    <button
+      class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition"
+    >
+      Import via URL
+    </button>
+  </section>
+
+  <!-- Trennung -->
+  <div class="border-t border-gray-700"></div>
+
+  <!-- Abschnitt 2: Manuelle Eingabe -->
+  <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-6">
+    <h2 class="text-2xl text-white font-semibold">Manuelle Eingabe von Stellenangeboten</h2>
+
+    <!-- Firmendaten -->
+    <div class="space-y-4">
+      <h3 class="text-xl text-white font-semibold">Unternehmensinformationen</h3>
+
+      <input
+        type="text"
+        placeholder="Firmenname"
+        class="w-full p-3 rounded-lg bg-gray-700 text-white"
+        id="companyName"
+      />
+
+      <input
+        type="text"
+        placeholder="Adresse"
+        class="w-full p-3 rounded-lg bg-gray-700 text-white"
+        id="companyAddress"
+      />
+
+      <input
+        type="text"
+        placeholder="Telefonnummer"
+        class="w-full p-3 rounded-lg bg-gray-700 text-white"
+        id="companyPhone"
+      />
+
+      <input
+        type="text"
+        placeholder="Ansprechpartner"
+        class="w-full p-3 rounded-lg bg-gray-700 text-white"
+        id="contactPerson"
+      />
+    </div>
+
+    <!-- Stellenbeschreibung -->
+    <div class="space-y-4">
+      <h3 class="text-xl text-white font-semibold">Stellenbeschreibung</h3>
+
+      <textarea
+        placeholder="Beschreiben Sie die Position, Aufgaben, Erwartungen..."
+        class="w-full p-3 rounded-lg bg-gray-700 text-white h-40 resize-none"
+        id="description"
+      ></textarea>
+    </div>
+
+    <button
+      class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition"
+    >
+      Stellenangebot speichern
+    </button>
+  </section>
+
+</div>

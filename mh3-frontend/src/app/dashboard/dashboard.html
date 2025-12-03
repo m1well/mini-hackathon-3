@@ -1,52 +1,102 @@
-<div class="dashHead"><nav class="navbar flex justify-between"><a href="#" class="bg-green-800 text-white px-6 py-2 rounded hover:bg-green-600">Neues Angebot hinzufügen</a><a href="./profil" class="bg-green-800 text-white px-6 py-2 rounded hover:bg-green-600">Profil anpassen</a></nav>
-<div class="headline"><table><tr><td><h3>Name</h3></td><td><h3>Ort</h3></td><td><h3>SkillMatch</h3></td></tr></table></div></div>
-<div id="list">
-    <table id="tableList" class="flex flex-col">
-        <div class="listRow flex justify-between"><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-        <div><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-        <div><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-        <div><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-        <div><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-        <div><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-        <div><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-        <div><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-        <div><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-        <div><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-        <div><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-        <div><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-        <div><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-        <div><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-        <div><tr><td>test</td>
-        <td>test</td>
-        <td>test2</td></tr></div>
-    </table>
+<div class="max-w-5xl mx-auto p-6 space-y-10 dashboard">
+
+  <!-- Top Bar -->
+  <div class="flex items-center justify-between">
+    <a
+      href="./newjo"
+      class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold transition"
+    >
+      Neues Angebot hinzufügen
+    </a>
+
+    <a
+      href="./profil"
+      class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold transition"
+    >
+      Profil anpassen
+    </a>
+  </div>
+
+  <!-- Table Section -->
+  <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
+    <h2 class="text-2xl text-white font-semibold">Übersicht aller Jobangebote</h2>
+
+    <!-- Header -->
+    <div class="grid grid-cols-3 font-semibold text-gray-300 px-2">
+      <span>Name</span>
+      <span>Ort</span>
+      <span>Skill-Match</span>
+    </div>
+
+    <div class="border-t border-gray-700"></div>
+
+    <!-- Test-Datenzeile (später dynamisch) -->
+    <button id="testRow" (click)="toggleDetails()" class="grid grid-cols-3 w-full text-left px-2 py-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition">
+
+      <span class="text-white">Beispielfirma GmbH</span>
+      <span class="text-gray-300">Berlin</span>
+      <span class="text-green-400 font-semibold">5 / 8</span>
+    </button>
+
+    <!-- Detail Section (initial hidden) -->
+    <div
+      id="detailSection"
+      class="hidden bg-gray-900 p-5 rounded-lg space-y-5 border border-gray-700"
+    >
+      <!-- Stellenbeschreibung -->
+      <div>
+        <h3 class="text-xl text-white font-semibold mb-2">Stellenbeschreibung</h3>
+        <p class="text-gray-300">
+          Beispieltext zur Stellenbeschreibung. Wird später durch KI-Daten ersetzt.
+        </p>
+      </div>
+
+      <!-- Skill Liste -->
+      <div class="flex justify-between"><div>
+        <h3 class="text-xl text-white font-semibold mb-2">Skills</h3>
+        <ul class="list-disc list-inside text-gray-300">
+          <li>Java</li>
+          <li>Spring Boot</li>
+          <li>Teamfähigkeit</li>
+        </ul>
+      </div>
+
+      <!-- Kontaktdaten -->
+      <div>
+        <h3 class="text-xl text-white font-semibold mb-2">Kontaktdaten</h3>
+        <p class="text-gray-300">Beispielfirma GmbH</p>
+        <p class="text-gray-300">Musterstraße 123, 10115 Berlin</p>
+        <p class="text-gray-300">Tel.: 030 123456</p>
+        <p class="text-gray-300">Kontakt: Max Mustermann</p>
+      </div></div>
+
+      <!-- Benefits -->
+      <div>
+        <h3 class="text-xl text-white font-semibold mb-2">Benefits</h3>
+        <ul class="list-disc list-inside text-gray-300">
+          <li>Home Office</li>
+          <li>Weiterbildungen</li>
+          <li>Firmenwagen</li>
+        </ul>
+      </div>
+
+      <!-- Status Auswahl -->
+      <div>
+        <h3 class="text-xl text-white font-semibold mb-2">Status</h3>
+        <select
+          class="p-3 bg-gray-700 text-white rounded-lg outline-none"
+        >
+          <option>NEU</option>
+          <option>Beworben</option>
+          <option>Challenge</option>
+          <option>Einladung</option>
+          <option>Zusage</option>
+          <option>Absage</option>
+        </select>
+      </div>
+
+    </div>
+
+  </section>
 
 </div>

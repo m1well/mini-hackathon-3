@@ -5,14 +5,14 @@
     width: 400px;
     padding-inline: 10px;
 }
-
+/* 
 button{
     width: 180px;
     height: 40px;
     border-radius: 4px;
     border: 1px solid black;
     background-color: green;
-}
+} */
 
 .profilHead{
     width: 100vw;
@@ -37,4 +37,10 @@ button{
 
 .skillRow{
     width: 600px;
+}
+
+
+
+.profil{
+    width: 100vw;
 }
