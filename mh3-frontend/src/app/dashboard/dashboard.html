@@ -2,17 +2,11 @@
 
   <!-- Top Bar -->
   <div class="flex items-center justify-between">
-    <a
-      href="./newjo"
-      class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold transition"
-    >
+    <a href="./newjo" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold transition">
       Neues Angebot hinzufügen
     </a>
 
-    <a
-      href="./profil"
-      class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold transition"
-    >
+    <a href="./profil" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold transition">
       Profil anpassen
     </a>
   </div>
@@ -22,81 +16,99 @@
     <h2 class="text-2xl text-white font-semibold">Übersicht aller Jobangebote</h2>
 
     <!-- Header -->
-    <div class="grid grid-cols-3 font-semibold text-gray-300 px-2">
+    <div class="grid grid-cols-5 font-semibold text-gray-300 px-2">
       <span>Name</span>
       <span>Ort</span>
+      <span>Salary</span>
       <span>Skill-Match</span>
+      <span>Aktionen</span>
     </div>
 
     <div class="border-t border-gray-700"></div>
 
-    <!-- Test-Datenzeile (später dynamisch) -->
-    <button id="testRow" (click)="toggleDetails()" class="grid grid-cols-3 w-full text-left px-2 py-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition">
-
-      <span class="text-white">Beispielfirma GmbH</span>
-      <span class="text-gray-300">Berlin</span>
-      <span class="text-green-400 font-semibold">5 / 8</span>
+    <!-- Dynamische Jobangebote -->
+    <div *ngFor="let offer of offers" class="mb-1">
+  <div class="grid grid-cols-5 items-center bg-gray-700 rounded-lg px-2 py-2 hover:bg-gray-600 transition"
+       (click)="toggleDetails(offer)">
+    <!-- Name -->
+    <span class="text-left col-span-1 text-white">{{ offer.name }}</span>
+    <!-- Ort -->
+    <span class="text-gray-300 col-span-1 text-sm">{{ offer.location }}</span>
+    <!-- Salary -->
+    <span class="text-gray-300 col-span-1 text-sm">{{ offer.salaryRange }}</span>
+    <!-- Skill-Match -->
+    <span class="text-green-400 font-semibold text-sm col-span-1">{{ offer.matchScore }}%</span>
+    <!-- Aktionen: Delete -->
+    <button class=" bg-gray-600 text-red-400 hover:text-red-600 font-bold px-3 py-1 text-lg rounded-lg transition col-span-1"
+            (click)="deleteOffer(offer); $event.stopPropagation()">
+      Löschen
     </button>
+  </div>
 
-    <!-- Detail Section (initial hidden) -->
-    <div
-      id="detailSection"
-      class="hidden bg-gray-900 p-5 rounded-lg space-y-5 border border-gray-700"
-    >
-      <!-- Stellenbeschreibung -->
-      <div>
-        <h3 class="text-xl text-white font-semibold mb-2">Stellenbeschreibung</h3>
-        <p class="text-gray-300">
-          Beispieltext zur Stellenbeschreibung. Wird später durch KI-Daten ersetzt.
-        </p>
+      <!-- Detail Section -->
+      <div *ngIf="selectedOffer === offer"
+           class="bg-gray-900 p-5 rounded-lg space-y-5 border border-gray-700 mt-2">
+
+        <!-- Stellenbeschreibung -->
+        <div>
+          <h3 class="text-xl text-white font-semibold mb-2">Stellenbeschreibung</h3>
+          <p class="text-gray-300">{{ offer.summary }}</p>
+        </div>
+
+        <!-- Tech Stack -->
+        <div>
+          <h3 class="text-xl text-white font-semibold mb-2">Tech Stack</h3>
+          <ul class="list-disc list-inside text-gray-300">
+            <li *ngFor="let tech of offer.techStack">{{ tech }}</li>
+          </ul>
+        </div>
+
+        <!-- Benefits -->
+        <div>
+          <h3 class="text-xl text-white font-semibold mb-2">Benefits</h3>
+          <ul class="list-disc list-inside text-gray-300">
+            <li>{{ offer.benefits.tasks }}</li>
+            <li>{{ offer.benefits.workingModel }}</li>
+            <li>{{ offer.benefits.experience }}</li>
+            <li>{{ offer.benefits.benefits }}</li>
+            <li>{{ offer.benefits.culture }}</li>
+          </ul>
+        </div>
+
+        <!-- Match Reasoning -->
+        <div>
+          <h3 class="text-xl text-white font-semibold mb-2">Match Begründung</h3>
+          <p class="text-gray-300">{{ offer.matchReasoning }}</p>
+        </div>
+
+        <!-- Kommentar -->
+        <div>
+          <h3 class="text-xl text-white font-semibold mb-2">Kommentar</h3>
+          <textarea class="w-full p-3 bg-gray-700 text-white rounded-lg outline-none mb-2"
+                    [(ngModel)]="offer.comment"
+                    placeholder="Kommentar hinzufügen..."></textarea>
+          <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition"
+                  (click)="updateComment(offer, offer.comment)">
+            Speichern
+          </button>
+        </div>
+
+        <!-- Status Auswahl -->
+        <div>
+          <h3 class="text-xl text-white font-semibold mb-2">Status</h3>
+          <select class="p-3 bg-gray-700 text-white rounded-lg outline-none"
+                  [(ngModel)]="offer.status"
+                  (change)="updateStatus(offer, offer.status ?? 'NEU')">
+            <option>NEU</option>
+            <option>Beworben</option>
+            <option>Challenge</option>
+            <option>Einladung</option>
+            <option>Zusage</option>
+            <option>Absage</option>
+          </select>
+        </div>
+
       </div>
-
-      <!-- Skill Liste -->
-      <div class="flex justify-between"><div>
-        <h3 class="text-xl text-white font-semibold mb-2">Skills</h3>
-        <ul class="list-disc list-inside text-gray-300">
-          <li>Java</li>
-          <li>Spring Boot</li>
-          <li>Teamfähigkeit</li>
-        </ul>
-      </div>
-
-      <!-- Kontaktdaten -->
-      <div>
-        <h3 class="text-xl text-white font-semibold mb-2">Kontaktdaten</h3>
-        <p class="text-gray-300">Beispielfirma GmbH</p>
-        <p class="text-gray-300">Musterstraße 123, 10115 Berlin</p>
-        <p class="text-gray-300">Tel.: 030 123456</p>
-        <p class="text-gray-300">Kontakt: Max Mustermann</p>
-      </div></div>
-
-      <!-- Benefits -->
-      <div>
-        <h3 class="text-xl text-white font-semibold mb-2">Benefits</h3>
-        <ul class="list-disc list-inside text-gray-300">
-          <li>Home Office</li>
-          <li>Weiterbildungen</li>
-          <li>Firmenwagen</li>
-        </ul>
-      </div>
-
-      <!-- Status Auswahl -->
-      <div>
-        <h3 class="text-xl text-white font-semibold mb-2">Status</h3>
-        <select
-          class="p-3 bg-gray-700 text-white rounded-lg outline-none"
-        >
-          <option>NEU</option>
-          <option>Beworben</option>
-          <option>Challenge</option>
-          <option>Einladung</option>
-          <option>Zusage</option>
-          <option>Absage</option>
-        </select>
-      </div>
-
     </div>
-
   </section>
-
 </div>

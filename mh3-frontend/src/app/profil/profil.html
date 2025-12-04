@@ -1,49 +1,72 @@
 <div class="max-w-3xl mx-auto p-6 space-y-10 profil">
 
-  <!-- Abschnitt: Skill hinzufügen (immer oben) -->
-  <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4 sticky top-0 z-10">
+  <!-- Persönliche Informationen -->
+  <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
+    <h2 class="text-2xl text-white font-semibold">Persönliche Informationen</h2>
 
-    <h2 class="text-2xl text-white font-semibold">Neuer Skill hinzufügen</h2>
+    <!-- Anzeige-Modus -->
+    <div *ngIf="!editing" class="space-y-2">
+      <p class="text-white"><strong>Name:</strong> {{ profile.name }}</p>
+      <p class="text-white"><strong>Jobtitel:</strong> {{ profile.jobTitle }}</p>
+      <p class="text-white"><strong>Erfahrung:</strong> {{ profile.experience }} Jahre</p>
+      <button class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition"
+              (click)="editProfile()">Bearbeiten</button>
+    </div>
 
-    <div class="flex gap-3">
-      <input
-        type="text"
-        placeholder="Enter a skill, e.g. Angular"
-        class="flex-1 p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none"
-        id="newSkill"
-      />
+    <!-- Bearbeiten-Modus -->
+    <div *ngIf="editing" class="space-y-4">
+      <div class="flex flex-col gap-2">
+        <label class="text-gray-300" for="profilName">Name</label>
+        <input id="profilName" type="text" class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none"
+               [(ngModel)]="profile.name">
+      </div>
 
-      <button
-        class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 rounded-lg transition"
-      >
-        Hinzufügen
-      </button>
+      <div class="flex flex-col gap-2">
+        <label class="text-gray-300" for="profilJob">Jobtitel</label>
+        <input id="profilJob" type="text" class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none"
+               [(ngModel)]="profile.jobTitle">
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-gray-300" for="profilExperience">Erfahrungsjahre</label>
+        <input id="profilExperience" type="number" min="0" class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none"
+               [(ngModel)]="profile.experience">
+      </div>
+
+      <button class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition"
+              (click)="saveProfile()">Speichern</button>
     </div>
   </section>
 
   <!-- Trennung -->
   <div class="border-t border-gray-700"></div>
 
-  <!-- Abschnitt: Skill-Liste (kann leer sein) -->
+  <!-- Neue Skills hinzufügen -->
+  <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4 sticky top-0 z-10">
+    <h2 class="text-2xl text-white font-semibold">Neuer Skill hinzufügen</h2>
+    <div class="flex gap-3">
+      <input type="text" id="newSkill" placeholder="Skill eingeben"
+             class="flex-1 p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
+      <button class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 rounded-lg transition"
+              (click)="addSkill()">Hinzufügen</button>
+    </div>
+  </section>
+
+  <!-- Skills-Liste -->
   <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
     <h2 class="text-2xl text-white font-semibold">Ihre Skills</h2>
 
     <div class="space-y-3" id="skillList">
+      <p *ngIf="profile.skills.length === 0" class="text-gray-400 italic">Noch keine Skills hinzugefügt.</p>
 
-      <!-- Placeholder wird nur angezeigt, wenn Liste leer -->
-      <p class="text-gray-400 italic">Noch keine Skills hinzugefügt.</p>
-
-      <!-- Beispiel-Eintrag (nur Beispiel) -->
-      <!-- 
-      <div class="flex items-center justify-between bg-gray-700 p-3 rounded-lg">
+      <div *ngFor="let skill of profile.skills; let i = index"
+           class="flex items-center justify-between bg-gray-700 p-3 rounded-lg">
         <div class="flex items-center gap-3">
-          <input type="checkbox" class="w-4 h-4" />
-          <span class="text-white">Example Skill</span>
+          <input type="checkbox" [(ngModel)]="skill.important" (change)="toggleImportant(i)" class="w-4 h-4">
+          <span class="text-white">{{ skill.name }}</span>
         </div>
-        <button class="text-red-400 hover:text-red-600 text-xl font-bold px-2">×</button>
+        <button class="text-red-400 hover:text-red-600 text-xl font-bold px-2" (click)="deleteSkill(i)">×</button>
       </div>
-      -->
-
     </div>
   </section>
 
