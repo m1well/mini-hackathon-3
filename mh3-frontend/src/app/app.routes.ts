@@ -6,14 +6,14 @@ import { Datenschutz } from './datenschutz/datenschutz';
 import { Dashboard } from './dashboard/dashboard';
 import { Profil } from './profil/profil';
 import { authGuard } from './guards/auth-guard'; // dein AuthGuard
-import { NewJobOffer } from './new-job-offer/new-job-offer';
+import { NewJobOfferComponent } from './new-job-offer/new-job-offer';
 import { Registration } from './registation/registration';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', component: Startpage },
   { path: 'startpage', component: Startpage },
   { path: 'registration', component: Registration },
-  { path: 'newjo', component: NewJobOffer, canActivate: [authGuard] },
+  { path: 'newjo', component: NewJobOfferComponent, canActivate: [authGuard] },
   { path: 'imprint', component: Imprint },
   { path: 'datenschutz', component: Datenschutz },
   { path: 'dashboard', component: Dashboard, canActivate: [authGuard] },

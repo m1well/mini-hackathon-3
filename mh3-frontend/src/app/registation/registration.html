@@ -9,7 +9,7 @@
 
     <!-- Name -->
     <div class="flex flex-col gap-2">
-      <label class="text-gray-300" for="regName">Name</label>
+      <label class="text-gray-300" for="regName">Vorname</label>
       <input
         id="regName"
         type="text"
@@ -45,7 +45,10 @@
     <div class="flex items-center gap-3">
       <input id="privacyCheck" type="checkbox" class="w-4 h-4" (change)="validatePrivacy()" />
       <label for="privacyCheck" class="text-gray-300 text-sm">
-        Ich habe den Datenschutzhinweis gelesen und stimme zu.
+        Ich habe die <a href="./datenschutz" class="text-blue-600 hover:underline transition">
+  Datenschutzhinweise
+</a>
+ gelesen und stimme zu.
       </label>
     </div>
 

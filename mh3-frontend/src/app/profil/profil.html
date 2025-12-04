@@ -1,4 +1,8 @@
 <div class="max-w-3xl mx-auto p-6 space-y-10 profil">
+  <a href="./dashboard" class="text-white font-bold text-lg hover:underline transition">
+  Zurück zum Dashboard
+</a>
+
 
   <!-- Persönliche Informationen -->
   <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
@@ -62,7 +66,7 @@
       <div *ngFor="let skill of profile.skills; let i = index"
            class="flex items-center justify-between bg-gray-700 p-3 rounded-lg">
         <div class="flex items-center gap-3">
-          <input type="checkbox" [(ngModel)]="skill.important" (change)="toggleImportant(i)" class="w-4 h-4">
+          <!-- <input type="checkbox" [(ngModel)]="skill.important" (change)="toggleImportant(i)" class="w-4 h-4"> -->
           <span class="text-white">{{ skill.name }}</span>
         </div>
         <button class="text-red-400 hover:text-red-600 text-xl font-bold px-2" (click)="deleteSkill(i)">×</button>
