@@ -24,6 +24,13 @@
              class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none" />
     </div>
 
+    <div class="flex flex-col gap-2">
+      <label class="text-gray-300" for="regJob">Präferenzen</label>
+      <input id="regJob" type="text" placeholder="Ihre Präferenzen"
+             [(ngModel)]="preferences"
+             class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none" />
+    </div>
+
     <div class="flex items-center gap-3">
       <input id="privacyCheck" type="checkbox" [(ngModel)]="privacyAccepted" class="w-4 h-4" />
       <label for="privacyCheck" class="text-gray-300 text-sm">

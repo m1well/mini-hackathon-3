@@ -2,8 +2,9 @@ import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { NgForOf, NgIf } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { JobOffer, JobOfferService } from '@/services/joboffer.service';
+import { JobOfferService } from '@/services/joboffer.service';
 import { UserSessionService } from '@/services/user-session.service';
+import { JobOffer } from '@/shared/model';
 
 @Component({
   selector: 'app-main',

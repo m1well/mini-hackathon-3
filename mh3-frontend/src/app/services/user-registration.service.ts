@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-
-export interface RegistrationPayload {
-  firstName: string;
-  currentJobTitle: string;
-  preferences: number;
-}
+import { RegistrationPayload } from '@/shared/model';
 
 @Injectable({ providedIn: 'root' })
 export class UserRegistrationService {

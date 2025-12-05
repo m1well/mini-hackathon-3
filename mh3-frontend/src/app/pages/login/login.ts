@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UserSessionService } from '../../services/user-session.service';
+import { UserSessionService } from '@/services/user-session.service';
 
 @Component({
   selector: 'app-login',

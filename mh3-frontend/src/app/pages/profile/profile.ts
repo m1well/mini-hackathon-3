@@ -2,8 +2,8 @@ import { Component, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { ProfileService } from '../../services/profile.service';
-import { UserSessionService } from '../../services/user-session.service';
+import { ProfileService } from '@/services/profile.service';
+import { UserSessionService } from '@/services/user-session.service';
 import { User } from '@/shared/model';
 
 @Component({
@@ -13,7 +13,7 @@ import { User } from '@/shared/model';
   templateUrl: './profile.html',
 })
 export class Profile {
-  profile: User = { firstName: '', currentJobTitle: '', preferences: 0, techstack: [] };
+  profile: User = { firstName: '', currentJobTitle: '', experienceYears: 0, preferences: '', techstack: [] };
   editing = false;
   newSkillName = '';
 

@@ -1,20 +1,22 @@
-import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UserRegistrationService, RegistrationPayload } from '../../services/user-registration.service';
-import { UserSessionService } from '../../services/user-session.service';
+import { UserRegistrationService } from '@/services/user-registration.service';
+import { UserSessionService } from '@/services/user-session.service';
+import { RegistrationPayload } from '@/shared/model';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [ CommonModule, FormsModule ],
   templateUrl: './registration.html',
 })
 export class Registration {
   name = '';
   job = '';
   exp: number | null = null;
+  preferences = '';
 
   privacyAccepted = false;
   uidConfirmed = false;
@@ -25,8 +27,8 @@ export class Registration {
     private registrationService: UserRegistrationService,
     private userSession: UserSessionService,
     private cd: ChangeDetectorRef,
-    private ngZone: NgZone
-  ) {}
+  ) {
+  }
 
   // Getter für Buttons
   get canRegister() {
@@ -38,34 +40,34 @@ export class Registration {
   }
 
   // Registrierung
-async register() {
-  if (!this.canRegister) return;
+  async register() {
+    if (!this.canRegister) return;
 
-  const payload: RegistrationPayload = {
-    firstName: this.name,
-    currentJobTitle: this.job,
-    preferences: this.exp!,
-  };
+    const payload: RegistrationPayload = {
+      firstName: this.name,
+      currentJobTitle: this.job,
+      experienceYears: this.exp!,
+      preferences: this.preferences,
+    };
 
+    try {
+      const generatedUid = await this.registrationService.register(payload);
 
-  try {
-    const generatedUid = await this.registrationService.register(payload);
-
-    // UID setzen und sofortige Aktualisierung erzwingen
-    this.uid = generatedUid;
-    this.cd.detectChanges();
-  } catch (err) {
-    console.error('Fehler bei Registrierung:', err);
-    this.uid = '1234';
-    this.cd.detectChanges();
+      // UID setzen und sofortige Aktualisierung erzwingen
+      this.uid = generatedUid;
+      this.cd.detectChanges();
+    } catch (err) {
+      console.error('Fehler bei Registrierung:', err);
+      this.uid = '1234';
+      this.cd.detectChanges();
+    }
   }
-}
 
   // Weiterleitung nach UID-Bestätigung
   goToStart() {
     if (!this.canStart) return;
 
     this.userSession.setUserId(this.uid!);
-    this.router.navigate(['/profile']);
+    this.router.navigate([ '/profile' ]);
   }
 }

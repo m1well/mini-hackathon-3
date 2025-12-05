@@ -16,7 +16,8 @@ export class ProfileService {
       return {
         firstName: 'Mustermann',
         currentJobTitle: 'Musterjob',
-        preferences: 3,
+        experienceYears: 3,
+        preferences: 'Ich mag Ci/CD',
         techstack: ['Angular', 'TypeScript', 'DevSecOps']
       };
     }
@@ -26,6 +27,7 @@ export class ProfileService {
   async updateFullProfile(uid: string, profile: User) {
     const payload = {
       currentJobTitle: profile.currentJobTitle,
+      experienceYears: profile.experienceYears,
       preferences: profile.preferences.toString(),
       techstack: profile.techstack
     };

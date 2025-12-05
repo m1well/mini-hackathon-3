@@ -1,29 +1,5 @@
 import { Injectable } from '@angular/core';
-
-export interface JobOffer {
-  uniqueKey: string;
-  title: string;
-  company: string;
-  analyzedViaUrl: boolean;
-  location?: string;
-  summary: string;
-  techstack?: string[];
-  tasks: string;
-  workingModel: string;
-  experience: string;
-  benefits: string;
-  culture: string;
-  salaryRange?: string;
-  matchScore: number;
-  matchReasoning: string;
-  urlJob?: string;
-  urlCompany?: string;
-  urlCompanyLogo?: string;
-  urlKununu?: string;
-  urlLinkedin?: string;
-  status: string;
-  comment: string;
-}
+import { JobOffer } from '@/shared/model';
 
 @Injectable({ providedIn: 'root' })
 export class JobOfferService {

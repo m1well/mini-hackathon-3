@@ -7,7 +7,7 @@ export const authGuard: CanActivateFn = (route, state): boolean | UrlTree => {
   const userId = localStorage.getItem('uid');
 
   // Ausnahmen, die ohne UserID zugänglich sind
-  const allowedPaths = [ 'datenschutz', 'imprint', 'login' ];
+  const allowedPaths = [ 'privacy', 'imprint', 'login' ];
 
   // Extrahiere den Pfad ohne führenden Slash
   const currentPath = state.url.replace(/^\//, '');

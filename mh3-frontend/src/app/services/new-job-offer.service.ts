@@ -2,22 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-
-export interface JobAnalysis {
-  title: string;
-  summary: string;
-  techStack: string[];
-  benefits: {
-    tasks: string;
-    workingModel: string;
-    experience: string;
-    benefits: string;
-    culture: string;
-  };
-  salaryRange: string;
-  matchScore: number;
-  matchReasoning: string;
-}
+import { JobAnalysis } from '@/shared/model';
 
 @Injectable({
   providedIn: 'root'

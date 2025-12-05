@@ -12,7 +12,8 @@
     <div *ngIf="!editing" class="space-y-2">
       <p class="text-white"><strong>Name:</strong> {{ profile.firstName }}</p>
       <p class="text-white"><strong>Jobtitel:</strong> {{ profile.currentJobTitle }}</p>
-      <p class="text-white"><strong>Erfahrung:</strong> {{ profile.preferences }} Jahre</p>
+      <p class="text-white"><strong>Erfahrung:</strong> {{ profile.experienceYears }} Jahre</p>
+      <p class="text-white"><strong>Präferenzen:</strong> {{ profile.preferences }}</p>
       <button class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition"
               (click)="editProfile()">Bearbeiten</button>
     </div>
