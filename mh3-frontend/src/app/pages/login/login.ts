@@ -2,15 +2,15 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UserSessionService } from '../services/user-session.service';
+import { UserSessionService } from '../../services/user-session.service';
 
 @Component({
-  selector: 'app-startpage',
+  selector: 'app-login',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './startpage.html',
+  templateUrl: './login.html',
 })
-export class Startpage {
+export class Login {
   userId = '';
 
   constructor(
@@ -18,7 +18,7 @@ export class Startpage {
     private userSession: UserSessionService
   ) {
     if (this.userSession.hasUser()) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/']);
     }
   }
 
@@ -26,7 +26,7 @@ export class Startpage {
     if (!this.userId.trim()) return;
 
     this.userSession.setUserId(this.userId.trim());
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/']);
   }
 
   goToRegistration(): void {

@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { JobAnalysisService, JobAnalysis } from '../services/new-job-offer.service';
+import { JobAnalysis, JobAnalysisService } from '../services/new-job-offer.service';
 
 @Component({
   selector: 'app-new-job-offer',
   standalone: true,
   imports: [
-    CommonModule,         
+    CommonModule,
     ReactiveFormsModule,
     RouterModule
   ],
   templateUrl: './new-job-offer.html',
-  styleUrls: ['./new-job-offer.css']
+  styleUrls: [ './new-job-offer.css' ]
 })
 export class NewJobOfferComponent {
 
@@ -41,39 +41,38 @@ export class NewJobOfferComponent {
     return this.form.get('jobText') as FormControl;
   }
 
-analyzeUrl(): void {
-  const url: string = this.form.value.jobUrl?.trim();
-  if (!url) return;
+  analyzeUrl(): void {
+    const url: string = this.form.value.jobUrl?.trim();
+    if (!url) return;
 
-  const uid = localStorage.getItem('uid') || '';
+    const uid = localStorage.getItem('uid') || '';
 
-  this.jobService.analyzeUrl(uid, url).subscribe({
-    next: (result) => {
-      // direkt setzen → Async-Pipe aktualisiert die Anzeige
-      this.analysisResult$.next(result);
-    },
-    error: (err) => {
-      console.error('Fehler bei URL-Analyse:', err);
-      this.analysisResult$.next(this.jobService.DUMMY_ANALYSIS);
-    }
-  });
-}
+    this.jobService.analyzeUrl(uid, url).subscribe({
+      next: (result) => {
+        // direkt setzen → Async-Pipe aktualisiert die Anzeige
+        this.analysisResult$.next(result);
+      },
+      error: (err) => {
+        console.error('Fehler bei URL-Analyse:', err);
+        this.analysisResult$.next(this.jobService.DUMMY_ANALYSIS);
+      }
+    });
+  }
 
-analyzeText(): void {
-  const text: string = this.form.value.jobText?.trim();
-  if (!text) return;
+  analyzeText(): void {
+    const text: string = this.form.value.jobText?.trim();
+    if (!text) return;
 
-  const uid = localStorage.getItem('uid') || '';
+    const uid = localStorage.getItem('uid') || '';
 
-  this.jobService.analyzeText(uid, text).subscribe({
-    next: (result) => this.analysisResult$.next(result),
-    error: (err) => {
-      console.error('Fehler bei Text-Analyse:', err);
-      this.analysisResult$.next(this.jobService.DUMMY_ANALYSIS);
-    }
-  });
-}
-
+    this.jobService.analyzeText(uid, text).subscribe({
+      next: (result) => this.analysisResult$.next(result),
+      error: (err) => {
+        console.error('Fehler bei Text-Analyse:', err);
+        this.analysisResult$.next(this.jobService.DUMMY_ANALYSIS);
+      }
+    });
+  }
 
   discardAnalysis() {
     this.analysisResult$.next(null);
@@ -85,7 +84,7 @@ analyzeText(): void {
 
     const uid = localStorage.getItem('uid') || '';
     this.jobService.saveAnalysis(uid, analysis).subscribe({
-      next: () => this.router.navigate(['./dashboard']),
+      next: () => this.router.navigate([ '/' ]),
       error: err => console.error('Fehler beim Speichern:', err)
     });
   }
