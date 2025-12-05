@@ -1,78 +1,51 @@
 import { Injectable } from '@angular/core';
 
-export interface Skill {
-  name: string;
-  important: boolean;
-}
-
 export interface UserProfile {
-  name: string;
-  jobTitle: string;
-  experience: number;
-  skills: Skill[];
+  firstName: string;
+  currentJobTitle: string;
+  preferences: number;
+  techstack: string[];
 }
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
-  private endpointGetProfile = 'https://backend.example.com/profile';
-  private endpointSaveProfile = 'https://backend.example.com/profile/save';
-  private endpointSaveSkill = 'https://backend.example.com/skill/save';
-  private endpointDeleteSkill = 'https://backend.example.com/skill/delete';
+  private endpointProfile = 'http://127.0.0.1:8087/user';
 
   async getProfile(uid: string): Promise<UserProfile> {
     try {
-      const res = await fetch(`${this.endpointGetProfile}?uid=${uid}`);
+      const res = await fetch(`${this.endpointProfile}/${uid}`);
       if (!res.ok) throw new Error('Backend Fehler');
       const data = await res.json();
-      return data.skills ? data : { ...data, skills: [] };
+      return data.techstack ? data : { ...data, techstack: [] };
     } catch {
       console.warn('Backend nicht erreichbar, Fallback nutzen.');
       return {
-        name: 'Mustermann',
-        jobTitle: 'Musterjob',
-        experience: 3,
-        skills: [
-          { name: 'Angular', important: false },
-          { name: 'TypeScript', important: true },
-          { name: 'DevSecOps', important: false }
-        ]
+        firstName: 'Mustermann',
+        currentJobTitle: 'Musterjob',
+        preferences: 3,
+        techstack: ['Angular', 'TypeScript', 'DevSecOps']
       };
     }
   }
 
-  async saveProfile(uid: string, profile: UserProfile) {
-    try {
-      await fetch(this.endpointSaveProfile, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uid, ...profile })
-      });
-    } catch {
-      console.warn('Save Profile Backend Platzhalter');
-    }
-  }
+  /** 🔥 NEU: Komplettes Profil via PUT speichern */
+  async updateFullProfile(uid: string, profile: UserProfile) {
+    const payload = {
+      currentJobTitle: profile.currentJobTitle,
+      preferences: profile.preferences.toString(),
+      techstack: profile.techstack
+    };
 
-  async saveSkill(uid: string, skill: Skill) {
     try {
-      await fetch(this.endpointSaveSkill, {
-        method: 'POST',
+      const res = await fetch(`${this.endpointProfile}/${uid}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uid, skill })
+        body: JSON.stringify(payload)
       });
-    } catch {
-      console.warn('Save Skill Backend Platzhalter');
-    }
-  }
 
-  async deleteSkill(uid: string, skillName: string) {
-    try {
-      await fetch(this.endpointDeleteSkill, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uid, skillName })
-      });
+      if (!res.ok) console.warn('Backend PUT Fehler');
     } catch {
-      console.warn('Delete Skill Backend Platzhalter');
+      console.warn('PUT Fallback: Backend nicht erreichbar');
     }
   }
 }

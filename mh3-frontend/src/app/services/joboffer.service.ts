@@ -1,84 +1,89 @@
 import { Injectable } from '@angular/core';
 
 export interface JobOffer {
-  id: string;
-  name: string;
-  location: string;
-  salaryRange: string;
-  matchScore: number;
+  uniqueKey: string;
+  title: string;
+  company: string;
+  analyzedViaUrl: boolean;
+  location?: string;
   summary: string;
-  techStack: string[];
-  benefits: {
-    tasks: string;
-    workingModel: string;
-    experience: string;
-    benefits: string;
-    culture: string;
-  };
+  techstack?: string[];
+  tasks: string;
+  workingModel: string;
+  experience: string;
+  benefits: string;
+  culture: string;
+  salaryRange?: string;
+  matchScore: number;
   matchReasoning: string;
+  urlJob?: string;
+  urlCompany?: string;
+  urlCompanyLogo?: string;
+  urlKununu?: string;
+  urlLinkedin?: string;
   status: string;
   comment: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class JobOfferService {
-  private endpointGetOffers = 'https://backend.example.com/offers';
-  private endpointDeleteOffer = 'https://backend.example.com/offers/delete';
-  private endpointUpdateOffer = 'https://backend.example.com/offers/update';
+  private endpoint = 'http://127.0.0.1:8087/job';
 
-  async getOffers(uid: string): Promise<JobOffer[]> {
-    try {
-      const res = await fetch(`${this.endpointGetOffers}?uid=${uid}`);
-      if (!res.ok) throw new Error('Backend Fehler');
-      const data: JobOffer[] = await res.json();
-      return data.map(o => ({ ...o, comment: o.comment ?? '', status: o.status ?? 'NEU' }));
-    } catch {
-      console.warn('Backend nicht erreichbar, Fallback nutzen.');
-      return [
-        {
-          id: '1',
-          name: 'it factum',
-          location: 'München/Remote',
-          salaryRange: '45.000 - 70.000 €',
-          matchScore: 90,
-          summary: 'it factum sucht einen Java Full Stack Entwickler (m/w/d)...',
-          techStack: ['Java', 'Spring Boot', 'Kotlin', 'Jakarta EE', 'Angular', 'React'],
-          benefits: {
-            tasks: 'Neu- und Weiterentwicklung von Anwendungen im Java-Ökosystem...',
-            workingModel: 'Teil-/Vollzeit, Home-Office möglich',
-            experience: 'Mehrjährige Erfahrung in objektorientierter Java-Entwicklung',
-            benefits: 'Unbefristeter Vertrag, Weiterbildungsmöglichkeiten, Firmenwagen',
-            culture: 'Teamorientierte, offene Kultur mit Humor'
-          },
-          matchReasoning: 'Sehr guter technischer Fit: Du bringst 7 Jahre Erfahrung...',
-          status: 'NEU',
-          comment: ''
-        }
-      ];
-    }
+  async getOffers(userCode: string): Promise<JobOffer[]> {
+    const res = await fetch(`${this.endpoint}/${userCode}`);
+    if (!res.ok) throw new Error('Backend Fehler beim Laden der Angebote');
+    const data: JobOffer[] = await res.json();
+    return data.map(o => ({
+      ...o,
+      comment: o.comment ?? '',
+      status: o.status ?? 'NEU'
+    }));
   }
 
-  async deleteOffer(uid: string, offerId: string) {
-    try {
-      await fetch(this.endpointDeleteOffer, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uid, offerId })
-      });
-    } catch {
-      console.warn('Delete Offer Backend Platzhalter');
-    }
+  async updateOffer(userCode: string, job: JobOffer) {
+    const payload = {
+      uniqueKey: job.uniqueKey,
+      urlJob: job.urlJob,
+      urlCompany: job.urlCompany,
+      urlCompanyLogo: job.urlCompanyLogo,
+      urlKununu: job.urlKununu,
+      urlLinkedin: job.urlLinkedin
+    };
+
+    const res = await fetch(`${this.endpoint}/${userCode}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) throw new Error('Backend Fehler beim Update des Jobs');
   }
 
-  async updateOffer(uid: string, offerId: string, update: Partial<JobOffer>) {
-    try {
-      await fetch(this.endpointUpdateOffer, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uid, offerId, ...update })
-      });
-    } catch {
-      console.warn('Update Offer Backend Platzhalter');
-    }
+  async deleteOffer(userCode: string, jobKey: string) {
+    // Backend unterstützt aktuell kein DELETE → wir könnten Status auf "Deleted" setzen oder PUT nutzen
+    await this.updateOffer(userCode, {
+      uniqueKey: jobKey,
+      urlJob: undefined,
+      urlCompany: undefined,
+      urlCompanyLogo: undefined,
+      urlKununu: undefined,
+      urlLinkedin: undefined,
+      title: '',
+      company: '',
+      analyzedViaUrl: false,
+      location: '',
+      summary: '',
+      techstack: [],
+      tasks: '',
+      workingModel: '',
+      experience: '',
+      benefits: '',
+      culture: '',
+      salaryRange: '',
+      matchScore: 0,
+      matchReasoning: '',
+      status: 'DELETED',
+      comment: ''
+    });
   }
 }

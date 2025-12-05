@@ -30,7 +30,7 @@
     <div *ngFor="let offer of offers" class="mb-1">
       <div class="grid grid-cols-5 items-center bg-gray-700 rounded-lg px-2 py-2 hover:bg-gray-600 transition cursor-pointer"
            (click)="toggleDetails(offer)">
-        <span class="text-left col-span-1 text-white">{{ offer.name }}</span>
+        <span class="text-left col-span-1 text-white">{{ offer.company }}</span>
         <span class="text-gray-300 col-span-1 text-sm">{{ offer.location }}</span>
         <span class="text-gray-300 col-span-1 text-sm">{{ offer.salaryRange }}</span>
         <span class="text-green-400 font-semibold text-sm col-span-1">{{ offer.matchScore }}%</span>
@@ -54,7 +54,7 @@
         <div>
           <h3 class="text-xl text-white font-semibold mb-2">Tech Stack</h3>
           <ul class="list-disc list-inside text-gray-300">
-            <li *ngFor="let tech of offer.techStack">{{ tech }}</li>
+            <li *ngFor="let tech of offer.techstack">{{ tech }}</li>
           </ul>
         </div>
 
@@ -62,11 +62,7 @@
         <div>
           <h3 class="text-xl text-white font-semibold mb-2">Benefits</h3>
           <ul class="list-disc list-inside text-gray-300">
-            <li>{{ offer.benefits.tasks }}</li>
-            <li>{{ offer.benefits.workingModel }}</li>
-            <li>{{ offer.benefits.experience }}</li>
-            <li>{{ offer.benefits.benefits }}</li>
-            <li>{{ offer.benefits.culture }}</li>
+            <li>{{ offer.benefits }}</li>
           </ul>
         </div>
 
@@ -83,9 +79,9 @@
                     [(ngModel)]="offer.comment"
                     placeholder="Kommentar hinzufügen..."></textarea>
           <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition"
-                  (click)="updateComment(offer, offer.comment)">
-            Speichern
-          </button>
+        (click)="updateComment(offer, offer.comment)">
+  Speichern
+</button>
         </div>
 
         <!-- Status Auswahl -->

@@ -23,3 +23,5 @@ class UserController(private val service: UserService) {
     @GetMapping("/{uniqueCode}")
     fun getUser(@PathVariable uniqueCode: String) = service.getUserForCode(uniqueCode)
 }
+
+

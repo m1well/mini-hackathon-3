@@ -36,25 +36,24 @@ export class Dashboard implements OnInit {
     const uid = this.userSession.getUserId();
     if (!uid) return;
 
-    this.offers = this.offers.filter(o => o.id !== offer.id);
-    if (this.selectedOffer?.id === offer.id) this.selectedOffer = null;
-
-    await this.jobOfferService.deleteOffer(uid, offer.id);
+    await this.jobOfferService.deleteOffer(uid, offer.uniqueKey);
+    this.offers = this.offers.filter(o => o.uniqueKey !== offer.uniqueKey);
+    if (this.selectedOffer?.uniqueKey === offer.uniqueKey) this.selectedOffer = null;
   }
 
   async updateStatus(offer: JobOffer, newStatus: string) {
-    offer.status = newStatus;
     const uid = this.userSession.getUserId();
     if (!uid) return;
 
-    await this.jobOfferService.updateOffer(uid, offer.id, { status: newStatus });
+    offer.status = newStatus;
+    await this.jobOfferService.updateOffer(uid, offer);
   }
 
   async updateComment(offer: JobOffer, comment: string) {
-    offer.comment = comment;
     const uid = this.userSession.getUserId();
     if (!uid) return;
 
-    await this.jobOfferService.updateOffer(uid, offer.id, { comment });
+    offer.comment = comment;
+    await this.jobOfferService.updateOffer(uid, offer);
   }
 }

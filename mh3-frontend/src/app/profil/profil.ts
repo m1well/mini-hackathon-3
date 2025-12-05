@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { ProfileService, UserProfile, Skill } from '../services/profile.service';
+import { ProfileService, UserProfile } from '../services/profile.service';
 import { UserSessionService } from '../services/user-session.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { UserSessionService } from '../services/user-session.service';
   templateUrl: './profil.html',
 })
 export class Profil {
-  profile: UserProfile = { name: '', jobTitle: '', experience: 0, skills: [] };
+  profile: UserProfile = { firstName: '', currentJobTitle: '', preferences: 0, techstack: [] };
   editing = false;
   newSkillName = '';
 
@@ -25,50 +25,51 @@ export class Profil {
   ) {}
 
   async ngOnInit() {
-    const uid = this.userSession.getUserId();
-    if (!uid) {
-      console.warn('Keine UID gefunden, fallback verwenden');
-      this.profile = await this.profileService.getProfile('fallback');
-      this.cd.detectChanges();
-      return;
-    }
-    this.profile = await this.profileService.getProfile(uid);
-    this.cd.detectChanges();
+  const uid = this.userSession.getUserId();
+
+  const realUid = uid || 'fallback';
+  const loaded = await this.profileService.getProfile(realUid);
+
+  // wichtig: neues Objekt erzeugen → damit Angular Change-Detection sicher anspringt  
+  this.profile = { ...loaded };
+
+  this.cd.detectChanges();
+}
+
+  editProfile() {
+    this.editing = true;
   }
 
-  editProfile() { this.editing = true; }
-
+  /** 🔥 Komplettes Profil speichern */
   async saveProfile() {
     const uid = this.userSession.getUserId();
     if (!uid) return;
-    await this.profileService.saveProfile(uid, this.profile);
+
+    await this.profileService.updateFullProfile(uid, this.profile);
     this.editing = false;
   }
 
+  /** 🔥 Skill hinzufügen → danach gesamtes Profil speichern */
   async addSkill() {
     const skillName = this.newSkillName.trim();
     if (!skillName) return;
-    const newSkill: Skill = { name: skillName, important: false };
-    this.profile.skills.push(newSkill);
+
+    this.profile.techstack.push(skillName);
     this.newSkillName = '';
+
     const uid = this.userSession.getUserId();
     if (!uid) return;
-    await this.profileService.saveSkill(uid, newSkill);
+
+    await this.profileService.updateFullProfile(uid, this.profile);
   }
 
+  /** 🔥 Skill löschen → danach gesamtes Profil speichern */
   async deleteSkill(index: number) {
-    const skill = this.profile.skills[index];
-    this.profile.skills.splice(index, 1);
-    const uid = this.userSession.getUserId();
-    if (!uid) return;
-    await this.profileService.deleteSkill(uid, skill.name);
-  }
+    this.profile.techstack.splice(index, 1);
 
-  async toggleImportant(index: number) {
-    const skill = this.profile.skills[index];
-    skill.important = !skill.important;
     const uid = this.userSession.getUserId();
     if (!uid) return;
-    await this.profileService.saveSkill(uid, skill);
+
+    await this.profileService.updateFullProfile(uid, this.profile);
   }
 }
