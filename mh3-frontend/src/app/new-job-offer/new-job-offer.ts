@@ -1,16 +1,17 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { JobAnalysisService, JobAnalysis } from './new-job-offer.service';
+import { JobAnalysisService, JobAnalysis } from '../services/new-job-offer.service';
 
 @Component({
   selector: 'app-new-job-offer',
   standalone: true,
   imports: [
-    CommonModule,         // für ngIf, async-Pipe
-    ReactiveFormsModule   // für FormControls
+    CommonModule,         
+    ReactiveFormsModule,
+    RouterModule
   ],
   templateUrl: './new-job-offer.html',
   styleUrls: ['./new-job-offer.css']
@@ -27,7 +28,7 @@ export class NewJobOfferComponent {
   ) {
     this.form = this.fb.group({
       jobUrl: this.fb.control<string>('', Validators.required),
-      jobText: this.fb.control<string>('')
+      jobText: this.fb.control<string>('', Validators.required)
     });
   }
 
@@ -40,33 +41,39 @@ export class NewJobOfferComponent {
     return this.form.get('jobText') as FormControl;
   }
 
-  analyzeUrl() {
-    const url = this.jobUrlControl.value?.trim();
-    if (!url) return;
+analyzeUrl(): void {
+  const url: string = this.form.value.jobUrl?.trim();
+  if (!url) return;
 
-    const uid = localStorage.getItem('uid') || '';
-    this.jobService.analyzeUrl(uid, url).subscribe({
-      next: result => this.analysisResult$.next(result),
-      error: err => {
-        console.error('Fehler bei URL-Analyse:', err);
-        this.analysisResult$.next(this.jobService.DUMMY_ANALYSIS);
-      }
-    });
-  }
+  const uid = localStorage.getItem('uid') || '';
 
-  analyzeText() {
-    const text = this.jobTextControl.value?.trim();
-    if (!text) return;
+  this.jobService.analyzeUrl(uid, url).subscribe({
+    next: (result) => {
+      // direkt setzen → Async-Pipe aktualisiert die Anzeige
+      this.analysisResult$.next(result);
+    },
+    error: (err) => {
+      console.error('Fehler bei URL-Analyse:', err);
+      this.analysisResult$.next(this.jobService.DUMMY_ANALYSIS);
+    }
+  });
+}
 
-    const uid = localStorage.getItem('uid') || '';
-    this.jobService.analyzeText(uid, text).subscribe({
-      next: result => this.analysisResult$.next(result),
-      error: err => {
-        console.error('Fehler bei Text-Analyse:', err);
-        this.analysisResult$.next(this.jobService.DUMMY_ANALYSIS);
-      }
-    });
-  }
+analyzeText(): void {
+  const text: string = this.form.value.jobText?.trim();
+  if (!text) return;
+
+  const uid = localStorage.getItem('uid') || '';
+
+  this.jobService.analyzeText(uid, text).subscribe({
+    next: (result) => this.analysisResult$.next(result),
+    error: (err) => {
+      console.error('Fehler bei Text-Analyse:', err);
+      this.analysisResult$.next(this.jobService.DUMMY_ANALYSIS);
+    }
+  });
+}
+
 
   discardAnalysis() {
     this.analysisResult$.next(null);

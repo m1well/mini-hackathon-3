@@ -1,14 +1,14 @@
-<div class="max-w-3xl mx-auto p-6 space-y-10 profil">
-  <a href="./dashboard" class="text-white font-bold text-lg hover:underline transition">
+<div class="max-w-3xl mx-auto p-6 space-y-10">
+  <a routerLink="/dashboard" 
+   class="text-white font-bold text-lg hover:underline transition cursor-pointer">
   Zurück zum Dashboard
 </a>
 
 
-  <!-- Persönliche Informationen -->
+  <!-- Persönliche Infos -->
   <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
     <h2 class="text-2xl text-white font-semibold">Persönliche Informationen</h2>
 
-    <!-- Anzeige-Modus -->
     <div *ngIf="!editing" class="space-y-2">
       <p class="text-white"><strong>Name:</strong> {{ profile.name }}</p>
       <p class="text-white"><strong>Jobtitel:</strong> {{ profile.jobTitle }}</p>
@@ -17,24 +17,23 @@
               (click)="editProfile()">Bearbeiten</button>
     </div>
 
-    <!-- Bearbeiten-Modus -->
     <div *ngIf="editing" class="space-y-4">
       <div class="flex flex-col gap-2">
-        <label class="text-gray-300" for="profilName">Name</label>
-        <input id="profilName" type="text" class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none"
-               [(ngModel)]="profile.name">
+        <label class="text-gray-300">Name</label>
+        <input type="text" [(ngModel)]="profile.name"
+               class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
       </div>
 
       <div class="flex flex-col gap-2">
-        <label class="text-gray-300" for="profilJob">Jobtitel</label>
-        <input id="profilJob" type="text" class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none"
-               [(ngModel)]="profile.jobTitle">
+        <label class="text-gray-300">Jobtitel</label>
+        <input type="text" [(ngModel)]="profile.jobTitle"
+               class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
       </div>
 
       <div class="flex flex-col gap-2">
-        <label class="text-gray-300" for="profilExperience">Erfahrungsjahre</label>
-        <input id="profilExperience" type="number" min="0" class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none"
-               [(ngModel)]="profile.experience">
+        <label class="text-gray-300">Erfahrungsjahre</label>
+        <input type="number" min="0" [(ngModel)]="profile.experience"
+               class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
       </div>
 
       <button class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition"
@@ -42,14 +41,11 @@
     </div>
   </section>
 
-  <!-- Trennung -->
-  <div class="border-t border-gray-700"></div>
-
   <!-- Neue Skills hinzufügen -->
   <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4 sticky top-0 z-10">
     <h2 class="text-2xl text-white font-semibold">Neuer Skill hinzufügen</h2>
     <div class="flex gap-3">
-      <input type="text" id="newSkill" placeholder="Skill eingeben"
+      <input type="text" placeholder="Skill eingeben" [(ngModel)]="newSkillName"
              class="flex-1 p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
       <button class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 rounded-lg transition"
               (click)="addSkill()">Hinzufügen</button>
@@ -60,7 +56,7 @@
   <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
     <h2 class="text-2xl text-white font-semibold">Ihre Skills</h2>
 
-    <div class="space-y-3" id="skillList">
+    <div class="space-y-3">
       <p *ngIf="profile.skills.length === 0" class="text-gray-400 italic">Noch keine Skills hinzugefügt.</p>
 
       <div *ngFor="let skill of profile.skills; let i = index"
@@ -73,5 +69,4 @@
       </div>
     </div>
   </section>
-
 </div>

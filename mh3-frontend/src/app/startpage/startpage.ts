@@ -1,34 +1,35 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { UserSessionService } from '../services/user-session.service';
 
 @Component({
   selector: 'app-startpage',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, FormsModule],
   templateUrl: './startpage.html',
-  styleUrl: './startpage.css'
 })
 export class Startpage {
+  userId = '';
 
-  constructor(private router: Router) {}
-
-  ngOnInit(): void {
-    const uid = localStorage.getItem('uid');
-
-    if (uid) {
-      // Wenn UID existiert → direkt weiterleiten
+  constructor(
+    private router: Router,
+    private userSession: UserSessionService
+  ) {
+    if (this.userSession.hasUser()) {
       this.router.navigate(['/dashboard']);
     }
   }
 
   start(): void {
-    const input = document.getElementById('userID') as HTMLInputElement;
+    if (!this.userId.trim()) return;
 
-    if (!input || !input.value.trim()) {
-      return;
-    }
-
-    localStorage.setItem('uid', input.value.trim());
+    this.userSession.setUserId(this.userId.trim());
     this.router.navigate(['/dashboard']);
+  }
+
+  goToRegistration(): void {
+    this.router.navigate(['/registration']);
   }
 }

@@ -1,99 +1,63 @@
 <div class="max-w-xl mx-auto p-6 space-y-10">
-
-  <h2 class="text-white text-3xl font-semibold text-center">
-    Registrierung
-  </h2>
+  <h2 class="text-white text-3xl font-semibold text-center">Registrierung</h2>
 
   <!-- Formular -->
   <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-6">
-
-    <!-- Name -->
     <div class="flex flex-col gap-2">
       <label class="text-gray-300" for="regName">Vorname</label>
-      <input
-        id="regName"
-        type="text"
-        placeholder="Ihr Name"
-        class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none"
-      />
+      <input id="regName" type="text" placeholder="Ihr Name"
+             [(ngModel)]="name"
+             class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none" />
     </div>
 
-    <!-- Jobtitel -->
     <div class="flex flex-col gap-2">
       <label class="text-gray-300" for="regJob">Jobtitel</label>
-      <input
-        id="regJob"
-        type="text"
-        placeholder="Ihr Jobtitel (z. B. DevSecOps)"
-        class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none"
-      />
+      <input id="regJob" type="text" placeholder="Ihr Jobtitel"
+             [(ngModel)]="job"
+             class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none" />
     </div>
 
-    <!-- Erfahrungsjahre -->
     <div class="flex flex-col gap-2">
       <label class="text-gray-300" for="regExp">Erfahrungsjahre</label>
-      <input
-        id="regExp"
-        type="number"
-        min="0"
-        placeholder="z. B. 3"
-        class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none"
-      />
+      <input id="regExp" type="number" min="0" placeholder="z. B. 3"
+             [(ngModel)]="exp"
+             class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none" />
     </div>
 
-    <!-- Datenschutz -->
     <div class="flex items-center gap-3">
-      <input id="privacyCheck" type="checkbox" class="w-4 h-4" (change)="validatePrivacy()" />
+      <input id="privacyCheck" type="checkbox" [(ngModel)]="privacyAccepted" class="w-4 h-4" />
       <label for="privacyCheck" class="text-gray-300 text-sm">
-        Ich habe die <a href="./datenschutz" class="text-blue-600 hover:underline transition">
-  Datenschutzhinweise
-</a>
- gelesen und stimme zu.
+        Ich habe die <a href="./datenschutz" class="text-blue-600 hover:underline transition">Datenschutzhinweise</a> gelesen und stimme zu.
       </label>
     </div>
 
-    <!-- Registrierung abschicken -->
-    <button
-      id="registerBtn"
-      class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50"
-      (click)="register()"
-      disabled
-    >
+    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50"
+            [disabled]="!canRegister"
+            (click)="register()">
       Registrieren
     </button>
-
   </section>
 
   <!-- Ergebnis / UID -->
-  <section
-    class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4 hidden"
-    id="uidSection"
-  >
+  <section *ngIf="uid" class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
     <h3 class="text-xl text-white font-semibold">Ihre User-ID</h3>
-
     <p class="text-gray-300">
-      Bitte speichern oder notieren Sie diese ID. Sie wird benötigt, um später auf Ihr Profil zuzugreifen.
+      Bitte speichern oder notieren Sie diese ID.
     </p>
 
-    <div class="bg-gray-700 p-3 rounded-lg text-white font-mono text-lg" id="uidDisplay"></div>
+    <div class="bg-gray-700 p-3 rounded-lg text-white font-mono text-lg">{{ uid }}</div>
 
-    <!-- Checkbox zum Bestätigen -->
     <div class="flex items-center gap-3 mt-4">
-      <input id="uidConfirmed" type="checkbox" class="w-4 h-4" (change)="validateUidConfirm()" />
+      <input id="uidConfirmed" type="checkbox" [(ngModel)]="uidConfirmed" class="w-4 h-4" />
       <label for="uidConfirmed" class="text-gray-300 text-sm">
         Ich habe die User-ID gespeichert/notiert.
       </label>
     </div>
 
-    <!-- Start Button -->
-    <button
-      id="startBtn"
-      class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50"
-      disabled
-      (click)="goToStart()"
-    >
+    <button class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50"
+            [disabled]="!canStart"
+            (click)="goToStart()">
       Start
     </button>
   </section>
-
 </div>

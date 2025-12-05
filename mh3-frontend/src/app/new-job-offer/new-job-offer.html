@@ -1,7 +1,8 @@
-<div class="max-w-3xl mx-auto p-6 space-y-10">
-  <a routerLink="./dashboard" class="text-white font-bold text-lg hover:underline transition">
-    Zurück zum Dashboard
-  </a>
+<div class="w-[80vw] max-w-[1440px] mx-auto p-6 space-y-10">
+  <a routerLink="/dashboard" 
+   class="text-white font-bold text-lg hover:underline transition cursor-pointer">
+  Zurück zum Dashboard
+</a>
 
   <!-- URL Input -->
   <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
@@ -10,10 +11,12 @@
            placeholder="https://example.com/job123"
            [formControl]="jobUrlControl"
            class="w-full p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none" />
-    <button class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition"
-            (click)="analyzeUrl()">
-      Analyse via URL
-    </button>
+    <button class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50"
+        [disabled]="jobUrlControl.invalid"
+        (click)="analyzeUrl()">
+  Analyse via URL
+</button>
+
   </section>
 
   <!-- Manuelle Eingabe -->
@@ -22,10 +25,14 @@
     <textarea placeholder="Kopieren Sie hier das gesamte Stellenangebot hinein ..."
               [formControl]="jobTextControl"
               class="w-full p-3 rounded-lg bg-gray-700 text-white h-40 resize-none"></textarea>
-    <button class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition"
-            (click)="analyzeText()">
-      Stellenangebot analysieren
-    </button>
+    <button
+  class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50"
+  [disabled]="jobTextControl.invalid"
+  (click)="analyzeText()"
+>
+  Stellenangebot analysieren
+</button>
+
   </section>
 
   <!-- Analyse Ergebnis -->

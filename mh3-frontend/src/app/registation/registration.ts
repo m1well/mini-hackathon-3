@@ -1,95 +1,70 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { UserRegistrationService, RegistrationPayload } from '../services/user-registration.service';
+import { UserSessionService } from '../services/user-session.service';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, FormsModule],
   templateUrl: './registration.html',
-  styleUrl: './registration.css'
 })
 export class Registration {
+  name = '';
+  job = '';
+  exp: number | null = null;
 
-  // Platzhalter Backend Endpoint
-  private endpoint = 'https://backend.example.com/api/register';
+  privacyAccepted = false;
+  uidConfirmed = false;
+  uid: string | null = null;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private registrationService: UserRegistrationService,
+    private userSession: UserSessionService,
+    private cd: ChangeDetectorRef,
+    private ngZone: NgZone
+  ) {}
 
-  validatePrivacy() {
-    const privacyCheck = document.getElementById('privacyCheck') as HTMLInputElement;
-    const registerBtn = document.getElementById('registerBtn') as HTMLButtonElement;
-    registerBtn.disabled = !privacyCheck.checked;
+  // Getter für Buttons
+  get canRegister() {
+    return this.privacyAccepted && !!this.name && !!this.job && this.exp !== null;
   }
 
-  validateUidConfirm() {
-    const confirm = document.getElementById('uidConfirmed') as HTMLInputElement;
-    const startBtn = document.getElementById('startBtn') as HTMLButtonElement;
-    startBtn.disabled = !confirm.checked;
+  get canStart() {
+    return this.uidConfirmed && !!this.uid;
   }
 
-  async register() {
-    const name = (document.getElementById('regName') as HTMLInputElement).value;
-    const job = (document.getElementById('regJob') as HTMLInputElement).value;
-    const exp = (document.getElementById('regExp') as HTMLInputElement).value;
+  // Registrierung
+async register() {
+  if (!this.canRegister) return;
 
-    if (!name || !job || !exp) {
-      alert('Bitte alle Felder ausfüllen.');
-      return;
-    }
+  const payload: RegistrationPayload = {
+    name: this.name,
+    jobTitle: this.job,
+    experience: this.exp!,
+  };
 
-    const payload = {
-      name,
-      jobTitle: job,
-      experience: parseInt(exp, 10)
-    };
+  try {
+    const generatedUid = await this.registrationService.register(payload);
 
-    let uid: string | null = null;
-
-    try {
-      // echter POST (funktioniert später)
-      const response = await fetch(this.endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        uid = data.uid ?? null;
-      } else {
-        console.warn("Backend antwortete mit Fehler:", response.status);
-      }
-    } catch (error) {
-      console.warn("Backend nicht erreichbar. Fallback UID wird genutzt.", error);
-    }
-
-    // Falls Backend fehlgeschlagen → Test UID nutzen
-    if (!uid) {
-      uid = "1234";
-    }
-
-    // UID anzeigen
-    const uidElement = document.getElementById('uidDisplay')!;
-    const uidSection = document.getElementById('uidSection')!;
-
-    uidElement.textContent = uid;
-    uidSection.classList.remove('hidden');
+    // UID setzen und sofortige Aktualisierung erzwingen
+    this.uid = generatedUid;
+    this.cd.detectChanges();
+  } catch (err) {
+    console.error('Fehler bei Registrierung:', err);
+    this.uid = '1234';
+    this.cd.detectChanges();
   }
-
-  goToStart() {
-  const uidElement = document.getElementById('uidDisplay');
-
-  if (!uidElement || !uidElement.textContent) {
-    console.error("Keine UID gefunden – Start abgebrochen.");
-    return;
-  }
-
-  const uid = uidElement.textContent.trim();
-
-  // UID im LocalStorage speichern
-  localStorage.setItem('uid', uid);
-
-  // Weiterleitung zum Profil
-  this.router.navigate(['/profil']);
 }
+
+  // Weiterleitung nach UID-Bestätigung
+  goToStart() {
+    if (!this.canStart) return;
+
+    this.userSession.setUserId(this.uid!);
+    this.router.navigate(['/profil']);
+  }
 }
