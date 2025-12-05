@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 
 export interface RegistrationPayload {
-  name: string;
-  jobTitle: string;
-  experience: number;
+  firstName: string;
+  currentJobTitle: string;
+  preferences: number;
 }
 
 @Injectable({ providedIn: 'root' })
 export class UserRegistrationService {
-  private readonly endpoint = 'https://backend.example.com/api/register';
+  private readonly endpoint = 'http://127.0.0.1:8087/user';
 
   async register(payload: RegistrationPayload): Promise<string> {
     try {
@@ -21,7 +21,7 @@ export class UserRegistrationService {
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const data = await response.json();
-      return data.uid ?? '1234';
+      return data.uniqueCode ?? '1234';
     } catch (err) {
       console.warn('Backend nicht erreichbar, Fallback UID wird genutzt.', err);
       return '1234';

@@ -42,10 +42,11 @@ async register() {
   if (!this.canRegister) return;
 
   const payload: RegistrationPayload = {
-    name: this.name,
-    jobTitle: this.job,
-    experience: this.exp!,
+    firstName: this.name,
+    currentJobTitle: this.job,
+    preferences: this.exp!,
   };
+
 
   try {
     const generatedUid = await this.registrationService.register(payload);
