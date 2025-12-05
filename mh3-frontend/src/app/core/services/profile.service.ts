@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { User } from '@/shared/model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
-  private endpointProfile = 'http://127.0.0.1:8087/user';
 
   async getProfile(uid: string): Promise<User> {
     try {
-      const res = await fetch(`${this.endpointProfile}/${uid}`);
+      const res = await fetch(`${environment.apiUrl}/user/${uid}`);
       if (!res.ok) throw new Error('Backend Fehler');
       const data = await res.json();
       return data.techstack ? data : { ...data, techstack: [] };
@@ -33,7 +33,7 @@ export class ProfileService {
     };
 
     try {
-      const res = await fetch(`${this.endpointProfile}/${uid}`, {
+      const res = await fetch(`${environment.apiUrl}/user/${uid}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

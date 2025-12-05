@@ -3,8 +3,8 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { Router, RouterModule } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { JobAnalysisService } from '@/services/new-job-offer.service';
 import { JobAnalysis } from '@/shared/model';
+import { JobAnalysisService } from '@/core/services/new-job-offer.service';
 
 @Component({
   selector: 'app-new-job-offer',

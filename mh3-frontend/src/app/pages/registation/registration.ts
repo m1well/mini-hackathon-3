@@ -2,9 +2,9 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UserRegistrationService } from '@/services/user-registration.service';
-import { UserSessionService } from '@/services/user-session.service';
 import { RegistrationPayload } from '@/shared/model';
+import { UserRegistrationService } from '@/core/services/user-registration.service';
+import { UserSessionService } from '@/core/services/user-session.service';
 
 @Component({
   selector: 'app-registration',

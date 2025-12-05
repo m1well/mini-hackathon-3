@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { RegistrationPayload } from '@/shared/model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class UserRegistrationService {
-  private readonly endpoint = 'http://127.0.0.1:8087/user';
 
   async register(payload: RegistrationPayload): Promise<string> {
     try {
-      const response = await fetch(this.endpoint, {
+      const response = await fetch(`${environment.apiUrl}/user`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

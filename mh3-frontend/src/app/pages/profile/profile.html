@@ -33,7 +33,13 @@
 
       <div class="flex flex-col gap-2">
         <label class="text-gray-300">Erfahrungsjahre</label>
-        <input type="number" min="0" [(ngModel)]="profile.preferences"
+        <input type="number" min="0" [(ngModel)]="profile.experienceYears"
+               class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-gray-300">Präferenzen</label>
+        <input type="text" [(ngModel)]="profile.preferences"
                class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
       </div>
 

@@ -2,9 +2,9 @@ import { Component, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { ProfileService } from '@/services/profile.service';
-import { UserSessionService } from '@/services/user-session.service';
 import { User } from '@/shared/model';
+import { ProfileService } from '@/core/services/profile.service';
+import { UserSessionService } from '@/core/services/user-session.service';
 
 @Component({
   selector: 'app-profile',
