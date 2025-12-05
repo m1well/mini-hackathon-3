@@ -2,17 +2,18 @@ import { Component, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { ProfileService, UserProfile } from '../services/profile.service';
-import { UserSessionService } from '../services/user-session.service';
+import { ProfileService } from '../../services/profile.service';
+import { UserSessionService } from '../../services/user-session.service';
+import { User } from '@/shared/model';
 
 @Component({
-  selector: 'app-profil',
+  selector: 'app-profile',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './profil.html',
+  templateUrl: './profile.html',
 })
-export class Profil {
-  profile: UserProfile = { firstName: '', currentJobTitle: '', preferences: 0, techstack: [] };
+export class Profile {
+  profile: User = { firstName: '', currentJobTitle: '', preferences: 0, techstack: [] };
   editing = false;
   newSkillName = '';
 
@@ -30,7 +31,7 @@ export class Profil {
   const realUid = uid || 'fallback';
   const loaded = await this.profileService.getProfile(realUid);
 
-  // wichtig: neues Objekt erzeugen → damit Angular Change-Detection sicher anspringt  
+  // wichtig: neues Objekt erzeugen → damit Angular Change-Detection sicher anspringt
   this.profile = { ...loaded };
 
   this.cd.detectChanges();
@@ -40,7 +41,7 @@ export class Profil {
     this.editing = true;
   }
 
-  /** 🔥 Komplettes Profil speichern */
+  /** 🔥 Komplettes Profile speichern */
   async saveProfile() {
     const uid = this.userSession.getUserId();
     if (!uid) return;
@@ -49,7 +50,7 @@ export class Profil {
     this.editing = false;
   }
 
-  /** 🔥 Skill hinzufügen → danach gesamtes Profil speichern */
+  /** 🔥 Skill hinzufügen → danach gesamtes Profile speichern */
   async addSkill() {
     const skillName = this.newSkillName.trim();
     if (!skillName) return;
@@ -63,7 +64,7 @@ export class Profil {
     await this.profileService.updateFullProfile(uid, this.profile);
   }
 
-  /** 🔥 Skill löschen → danach gesamtes Profil speichern */
+  /** 🔥 Skill löschen → danach gesamtes Profile speichern */
   async deleteSkill(index: number) {
     this.profile.techstack.splice(index, 1);
 

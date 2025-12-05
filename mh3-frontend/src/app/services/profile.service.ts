@@ -1,17 +1,11 @@
 import { Injectable } from '@angular/core';
-
-export interface UserProfile {
-  firstName: string;
-  currentJobTitle: string;
-  preferences: number;
-  techstack: string[];
-}
+import { User } from '@/shared/model';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
   private endpointProfile = 'http://127.0.0.1:8087/user';
 
-  async getProfile(uid: string): Promise<UserProfile> {
+  async getProfile(uid: string): Promise<User> {
     try {
       const res = await fetch(`${this.endpointProfile}/${uid}`);
       if (!res.ok) throw new Error('Backend Fehler');
@@ -28,8 +22,8 @@ export class ProfileService {
     }
   }
 
-  /** 🔥 NEU: Komplettes Profil via PUT speichern */
-  async updateFullProfile(uid: string, profile: UserProfile) {
+  /** 🔥 NEU: Komplettes Profile via PUT speichern */
+  async updateFullProfile(uid: string, profile: User) {
     const payload = {
       currentJobTitle: profile.currentJobTitle,
       preferences: profile.preferences.toString(),

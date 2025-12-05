@@ -3,3 +3,10 @@ export type Util = {
   time: Date;
   stage: string;
 }
+
+export type User = {
+  firstName: string;
+  currentJobTitle: string;
+  preferences: number;
+  techstack: string[];
+}

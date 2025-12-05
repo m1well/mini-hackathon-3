@@ -2,8 +2,8 @@ import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UserRegistrationService, RegistrationPayload } from '../services/user-registration.service';
-import { UserSessionService } from '../services/user-session.service';
+import { UserRegistrationService, RegistrationPayload } from '../../services/user-registration.service';
+import { UserSessionService } from '../../services/user-session.service';
 
 @Component({
   selector: 'app-registration',
@@ -66,6 +66,6 @@ async register() {
     if (!this.canStart) return;
 
     this.userSession.setUserId(this.uid!);
-    this.router.navigate(['/profil']);
+    this.router.navigate(['/profile']);
   }
 }
