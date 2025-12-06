@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { CommonModule } from '@angular/common';
 import { JobAnalysis } from '@/shared/model';
 import { JobAnalysisService } from '@/core/services/new-job-offer.service';
 
@@ -10,12 +9,10 @@ import { JobAnalysisService } from '@/core/services/new-job-offer.service';
   selector: 'app-new-job-offer',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     RouterModule
   ],
   templateUrl: './new-job-offer.html',
-  styleUrls: [ './new-job-offer.css' ]
 })
 export class NewJobOfferComponent {
 

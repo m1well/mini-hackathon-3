@@ -1,51 +1,55 @@
 <div class="max-w-3xl mx-auto p-6 space-y-10">
   <a routerLink="/"
-   class="text-white font-bold text-lg hover:underline transition cursor-pointer">
-  Zurück
-</a>
+     class="text-white font-bold text-lg hover:underline transition cursor-pointer">
+    Zurück
+  </a>
 
 
   <!-- Persönliche Infos -->
   <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
     <h2 class="text-2xl text-white font-semibold">Persönliche Informationen</h2>
 
-    <div *ngIf="!editing" class="space-y-2">
-      <p class="text-white"><strong>Name:</strong> {{ profile.firstName }}</p>
-      <p class="text-white"><strong>Jobtitel:</strong> {{ profile.currentJobTitle }}</p>
-      <p class="text-white"><strong>Erfahrung:</strong> {{ profile.experienceYears }} Jahre</p>
-      <p class="text-white"><strong>Präferenzen:</strong> {{ profile.preferences }}</p>
-      <button class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition"
-              (click)="editProfile()">Bearbeiten</button>
-    </div>
-
-    <div *ngIf="editing" class="space-y-4">
-      <div class="flex flex-col gap-2">
-        <label class="text-gray-300">Name</label>
-        <input type="text" [(ngModel)]="profile.firstName"
-               class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
+    @if (!editing) {
+      <div class="space-y-2">
+        <p class="text-white"><strong>Name:</strong> {{ profile.firstName }}</p>
+        <p class="text-white"><strong>Jobtitel:</strong> {{ profile.currentJobTitle }}</p>
+        <p class="text-white"><strong>Erfahrung:</strong> {{ profile.experienceYears }} Jahre</p>
+        <p class="text-white"><strong>Präferenzen:</strong> {{ profile.preferences }}</p>
+        <button class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition"
+                (click)="editProfile()">Bearbeiten
+        </button>
       </div>
+    } @else {
+      <div class="space-y-4">
+        <div class="flex flex-col gap-2">
+          <label class="text-gray-300">Name</label>
+          <input type="text" [(ngModel)]="profile.firstName"
+                 class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
+        </div>
 
-      <div class="flex flex-col gap-2">
-        <label class="text-gray-300">Jobtitel</label>
-        <input type="text" [(ngModel)]="profile.currentJobTitle"
-               class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
+        <div class="flex flex-col gap-2">
+          <label class="text-gray-300">Jobtitel</label>
+          <input type="text" [(ngModel)]="profile.currentJobTitle"
+                 class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-gray-300">Erfahrungsjahre</label>
+          <input type="number" min="0" [(ngModel)]="profile.experienceYears"
+                 class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-gray-300">Präferenzen</label>
+          <input type="text" [(ngModel)]="profile.preferences"
+                 class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
+        </div>
+
+        <button class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition"
+                (click)="saveProfile()">Speichern
+        </button>
       </div>
-
-      <div class="flex flex-col gap-2">
-        <label class="text-gray-300">Erfahrungsjahre</label>
-        <input type="number" min="0" [(ngModel)]="profile.experienceYears"
-               class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <label class="text-gray-300">Präferenzen</label>
-        <input type="text" [(ngModel)]="profile.preferences"
-               class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
-      </div>
-
-      <button class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition"
-              (click)="saveProfile()">Speichern</button>
-    </div>
+    }
   </section>
 
   <!-- Neue Skills hinzufügen -->
@@ -55,7 +59,8 @@
       <input type="text" placeholder="Skill eingeben" [(ngModel)]="newSkillName"
              class="flex-1 p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none">
       <button class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 rounded-lg transition"
-              (click)="addSkill()">Hinzufügen</button>
+              (click)="addSkill()">Hinzufügen
+      </button>
     </div>
   </section>
 
@@ -64,15 +69,17 @@
     <h2 class="text-2xl text-white font-semibold">Ihre Skills</h2>
 
     <div class="space-y-3">
-      <p *ngIf="profile.techstack.length === 0" class="text-gray-400 italic">Noch keine Skills hinzugefügt.</p>
-
-      <div *ngFor="let skill of profile.techstack; let i = index"
-           class="flex items-center justify-between bg-gray-700 p-3 rounded-lg">
-        <div class="flex items-center gap-3">
-          <span class="text-white">{{ skill }}</span>
+      @for (skill of profile.techstack; track skill; let i = $index) {
+        <div class="flex items-center justify-between bg-gray-700 p-3 rounded-lg">
+          <div class="flex items-center gap-3">
+            <span class="text-white">{{ skill }}</span>
+          </div>
+          <button class="text-red-400 hover:text-red-600 text-xl font-bold px-2" (click)="deleteSkill(i)">×</button>
         </div>
-        <button class="text-red-400 hover:text-red-600 text-xl font-bold px-2" (click)="deleteSkill(i)">×</button>
-      </div>
+      } @empty {
+        <p class="text-gray-400 italic">Noch keine Skills hinzugefügt.</p>
+      }
+
     </div>
   </section>
 </div>

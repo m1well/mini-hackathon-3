@@ -36,31 +36,34 @@
   </section>
 
   <!-- Analyse Ergebnis -->
-  <section *ngIf="analysisResult$ | async as analysis" class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
-    <h2 class="text-2xl text-white font-semibold">Analyse Ergebnis</h2>
+  @if (analysisResult$.getValue()) {
+    @let analysis = analysisResult$.getValue()!!;
+    <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
+      <h2 class="text-2xl text-white font-semibold">Analyse Ergebnis</h2>
 
-    <p class="text-white"><strong>Titel:</strong> {{ analysis.title }}</p>
-    <p class="text-white"><strong>Zusammenfassung:</strong> {{ analysis.summary }}</p>
-    <p class="text-white"><strong>Skills:</strong> {{ analysis.techStack.join(', ') }}</p>
+      <p class="text-white"><strong>Titel:</strong> {{ analysis.title }}</p>
+      <p class="text-white"><strong>Zusammenfassung:</strong> {{ analysis.summary }}</p>
+      <p class="text-white"><strong>Skills:</strong> {{ analysis.techStack.join(', ') }}</p>
 
-    <p class="text-white"><strong>Benefits:</strong></p>
-    <ul class="text-white list-disc list-inside">
-      <li><strong>Tasks:</strong> {{ analysis.benefits.tasks }}</li>
-      <li><strong>Working Model:</strong> {{ analysis.benefits.workingModel }}</li>
-      <li><strong>Experience:</strong> {{ analysis.benefits.experience }}</li>
-      <li><strong>Benefits:</strong> {{ analysis.benefits.benefits }}</li>
-      <li><strong>Culture:</strong> {{ analysis.benefits.culture }}</li>
-    </ul>
+      <p class="text-white"><strong>Benefits:</strong></p>
+      <ul class="text-white list-disc list-inside">
+        <li><strong>Tasks:</strong> {{ analysis.benefits.tasks }}</li>
+        <li><strong>Working Model:</strong> {{ analysis.benefits.workingModel }}</li>
+        <li><strong>Experience:</strong> {{ analysis.benefits.experience }}</li>
+        <li><strong>Benefits:</strong> {{ analysis.benefits.benefits }}</li>
+        <li><strong>Culture:</strong> {{ analysis.benefits.culture }}</li>
+      </ul>
 
-    <p class="text-white"><strong>Salary Range:</strong> {{ analysis.salaryRange }}</p>
-    <p class="text-white"><strong>Match Score:</strong> {{ analysis.matchScore }}%</p>
-    <p class="text-white"><strong>Match Reasoning:</strong> {{ analysis.matchReasoning }}</p>
+      <p class="text-white"><strong>Salary Range:</strong> {{ analysis.salaryRange }}</p>
+      <p class="text-white"><strong>Match Score:</strong> {{ analysis.matchScore }}%</p>
+      <p class="text-white"><strong>Match Reasoning:</strong> {{ analysis.matchReasoning }}</p>
 
-    <div class="flex gap-3 mt-4">
-      <button class="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg transition"
-              (click)="discardAnalysis()">Verwerfen</button>
-      <button class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition"
-              (click)="saveAnalysis()">Speichern</button>
-    </div>
-  </section>
+      <div class="flex gap-3 mt-4">
+        <button class="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg transition"
+                (click)="discardAnalysis()">Verwerfen</button>
+        <button class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition"
+                (click)="saveAnalysis()">Speichern</button>
+      </div>
+    </section>
+  }
 </div>

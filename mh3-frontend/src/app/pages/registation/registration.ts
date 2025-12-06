@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RegistrationPayload } from '@/shared/model';
 import { UserRegistrationService } from '@/core/services/user-registration.service';
@@ -9,7 +8,7 @@ import { UserSessionService } from '@/core/services/user-session.service';
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [ CommonModule, FormsModule ],
+  imports: [ FormsModule ],
   templateUrl: './registration.html',
 })
 export class Registration {

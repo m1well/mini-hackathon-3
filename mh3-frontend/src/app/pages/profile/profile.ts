@@ -1,5 +1,4 @@
-import { Component, ChangeDetectorRef, NgZone } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { User } from '@/shared/model';
@@ -9,7 +8,7 @@ import { UserSessionService } from '@/core/services/user-session.service';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [ FormsModule, RouterModule ],
   templateUrl: './profile.html',
 })
 export class Profile {
@@ -23,19 +22,20 @@ export class Profile {
     private userSession: UserSessionService,
     private cd: ChangeDetectorRef,
     private ngZone: NgZone
-  ) {}
+  ) {
+  }
 
   async ngOnInit() {
-  const uid = this.userSession.getUserId();
+    const uid = this.userSession.getUserId();
 
-  const realUid = uid || 'fallback';
-  const loaded = await this.profileService.getProfile(realUid);
+    const realUid = uid || 'fallback';
+    const loaded = await this.profileService.getProfile(realUid);
 
-  // wichtig: neues Objekt erzeugen → damit Angular Change-Detection sicher anspringt
-  this.profile = { ...loaded };
+    // wichtig: neues Objekt erzeugen → damit Angular Change-Detection sicher anspringt
+    this.profile = { ...loaded };
 
-  this.cd.detectChanges();
-}
+    this.cd.detectChanges();
+  }
 
   editProfile() {
     this.editing = true;

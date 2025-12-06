@@ -46,25 +46,27 @@
   </section>
 
   <!-- Ergebnis / UID -->
-  <section *ngIf="uid" class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
-    <h3 class="text-xl text-white font-semibold">Ihre User-ID</h3>
-    <p class="text-gray-300">
-      Bitte speichern oder notieren Sie diese ID.
-    </p>
+  @if (uid) {
+    <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
+      <h3 class="text-xl text-white font-semibold">Ihre User-ID</h3>
+      <p class="text-gray-300">
+        Bitte speichern oder notieren Sie diese ID.
+      </p>
 
-    <div class="bg-gray-700 p-3 rounded-lg text-white font-mono text-lg">{{ uid }}</div>
+      <div class="bg-gray-700 p-3 rounded-lg text-white font-mono text-lg">{{ uid }}</div>
 
-    <div class="flex items-center gap-3 mt-4">
-      <input id="uidConfirmed" type="checkbox" [(ngModel)]="uidConfirmed" class="w-4 h-4" />
-      <label for="uidConfirmed" class="text-gray-300 text-sm">
-        Ich habe die User-ID gespeichert/notiert.
-      </label>
-    </div>
+      <div class="flex items-center gap-3 mt-4">
+        <input id="uidConfirmed" type="checkbox" [(ngModel)]="uidConfirmed" class="w-4 h-4" />
+        <label for="uidConfirmed" class="text-gray-300 text-sm">
+          Ich habe die User-ID gespeichert/notiert.
+        </label>
+      </div>
 
-    <button class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50"
-            [disabled]="!canStart"
-            (click)="goToStart()">
-      Start
-    </button>
-  </section>
+      <button class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50"
+              [disabled]="!canStart"
+              (click)="goToStart()">
+        Start
+      </button>
+    </section>
+  }
 </div>

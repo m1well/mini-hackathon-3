@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
-import { NgForOf, NgIf } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { JobOffer } from '@/shared/model';
@@ -9,8 +8,6 @@ import { UserSessionService } from '@/core/services/user-session.service';
 @Component({
   selector: 'app-main',
   imports: [
-    NgForOf,
-    NgIf,
     ReactiveFormsModule,
     RouterLink,
     FormsModule
