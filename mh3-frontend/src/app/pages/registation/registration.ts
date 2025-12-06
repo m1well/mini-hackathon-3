@@ -18,8 +18,8 @@ export class Registration {
   preferences = '';
 
   privacyAccepted = false;
-  uidConfirmed = false;
-  uid: string | null = null;
+  codeConfirmed = false;
+  code: string | null = null;
 
   constructor(
     private router: Router,
@@ -35,7 +35,7 @@ export class Registration {
   }
 
   get canStart() {
-    return this.uidConfirmed && !!this.uid;
+    return this.codeConfirmed && !!this.code;
   }
 
   // Registrierung
@@ -50,23 +50,21 @@ export class Registration {
     };
 
     try {
-      const generatedUid = await this.registrationService.register(payload);
-
-      // UID setzen und sofortige Aktualisierung erzwingen
-      this.uid = generatedUid;
+      const generatedCode = await this.registrationService.register(payload);
+      this.code = generatedCode;
       this.cd.detectChanges();
     } catch (err) {
       console.error('Fehler bei Registrierung:', err);
-      this.uid = '1234';
+      this.code = '1234';
       this.cd.detectChanges();
     }
   }
 
-  // Weiterleitung nach UID-Bestätigung
+  // Weiterleitung nach Bestätigung
   goToStart() {
     if (!this.canStart) return;
 
-    this.userSession.setUserId(this.uid!);
+    this.userSession.setUserCode(this.code!);
     this.router.navigate([ '/profile' ]);
   }
 }

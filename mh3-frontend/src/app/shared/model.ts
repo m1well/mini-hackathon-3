@@ -17,9 +17,9 @@ export type JobOffer = {
   title: string;
   company: string;
   analyzedViaUrl: boolean;
-  location?: string;
+  location: string;
   summary: string;
-  techstack?: string[];
+  techstack: string[];
   tasks: string;
   workingModel: string;
   experience: string;
@@ -38,19 +38,22 @@ export type JobOffer = {
 }
 
 export type JobAnalysis = {
+  uniqueKey: string;
   title: string;
+  company: string;
+  analyzedViaUrl: boolean;
+  location: string;
   summary: string;
   techStack: string[];
-  benefits: {
-    tasks: string;
-    workingModel: string;
-    experience: string;
-    benefits: string;
-    culture: string;
-  };
+  tasks: string;
+  workingModel: string;
+  experience: string;
+  benefits: string;
+  culture: string;
   salaryRange: string;
   matchScore: number;
   matchReasoning: string;
+  urlJob?: string;
 }
 
 export type RegistrationPayload = {

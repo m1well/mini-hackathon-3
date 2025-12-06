@@ -26,10 +26,10 @@ export class Profile {
   }
 
   async ngOnInit() {
-    const uid = this.userSession.getUserId();
+    const code = this.userSession.getUserCode();
 
-    const realUid = uid || 'fallback';
-    const loaded = await this.profileService.getProfile(realUid);
+    const realCode = code || 'fallback';
+    const loaded = await this.profileService.getProfile(realCode);
 
     // wichtig: neues Objekt erzeugen → damit Angular Change-Detection sicher anspringt
     this.profile = { ...loaded };
@@ -43,10 +43,10 @@ export class Profile {
 
   /** 🔥 Komplettes Profile speichern */
   async saveProfile() {
-    const uid = this.userSession.getUserId();
-    if (!uid) return;
+    const code = this.userSession.getUserCode();
+    if (!code) return;
 
-    await this.profileService.updateFullProfile(uid, this.profile);
+    await this.profileService.updateFullProfile(code, this.profile);
     this.editing = false;
   }
 
@@ -58,19 +58,19 @@ export class Profile {
     this.profile.techstack.push(skillName);
     this.newSkillName = '';
 
-    const uid = this.userSession.getUserId();
-    if (!uid) return;
+    const code = this.userSession.getUserCode();
+    if (!code) return;
 
-    await this.profileService.updateFullProfile(uid, this.profile);
+    await this.profileService.updateFullProfile(code, this.profile);
   }
 
   /** 🔥 Skill löschen → danach gesamtes Profile speichern */
   async deleteSkill(index: number) {
     this.profile.techstack.splice(index, 1);
 
-    const uid = this.userSession.getUserId();
-    if (!uid) return;
+    const code = this.userSession.getUserCode();
+    if (!code) return;
 
-    await this.profileService.updateFullProfile(uid, this.profile);
+    await this.profileService.updateFullProfile(code, this.profile);
   }
 }

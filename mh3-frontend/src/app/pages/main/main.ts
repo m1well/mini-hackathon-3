@@ -28,8 +28,8 @@ export class Main implements OnInit {
   }
 
   async ngOnInit() {
-    const uid = this.userSession.getUserId() ?? 'fallback';
-    this.offers = await this.jobOfferService.getOffers(uid);
+    const code = this.userSession.getUserCode() ?? 'fallback';
+    this.offers = await this.jobOfferService.getOffers(code);
     this.cd.detectChanges();
   }
 
@@ -38,27 +38,27 @@ export class Main implements OnInit {
   }
 
   async deleteOffer(offer: JobOffer) {
-    const uid = this.userSession.getUserId();
-    if (!uid) return;
+    const code = this.userSession.getUserCode();
+    if (!code) return;
 
-    await this.jobOfferService.deleteOffer(uid, offer.uniqueKey);
+    await this.jobOfferService.deleteOffer(code, offer.uniqueKey);
     this.offers = this.offers.filter(o => o.uniqueKey !== offer.uniqueKey);
     if (this.selectedOffer?.uniqueKey === offer.uniqueKey) this.selectedOffer = null;
   }
 
   async updateStatus(offer: JobOffer, newStatus: string) {
-    const uid = this.userSession.getUserId();
-    if (!uid) return;
+    const code = this.userSession.getUserCode();
+    if (!code) return;
 
     offer.status = newStatus;
-    await this.jobOfferService.updateOffer(uid, offer);
+    await this.jobOfferService.updateOffer(code, offer);
   }
 
   async updateComment(offer: JobOffer, comment: string) {
-    const uid = this.userSession.getUserId();
-    if (!uid) return;
+    const code = this.userSession.getUserCode();
+    if (!code) return;
 
     offer.comment = comment;
-    await this.jobOfferService.updateOffer(uid, offer);
+    await this.jobOfferService.updateOffer(code, offer);
   }
 }

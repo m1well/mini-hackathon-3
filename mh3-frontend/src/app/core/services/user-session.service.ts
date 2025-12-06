@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class UserSessionService {
-  private readonly key = 'uid';
+  private readonly key = 'code';
 
-  getUserId(): string | null {
+  getUserCode(): string | null {
     return localStorage.getItem(this.key);
   }
 
-  setUserId(id: string): void {
-    localStorage.setItem(this.key, id);
+  setUserCode(code: string): void {
+    localStorage.setItem(this.key, code);
   }
 
   hasUser(): boolean {
-    return !!this.getUserId();
+    return !!this.getUserCode();
   }
 
   clear(): void {

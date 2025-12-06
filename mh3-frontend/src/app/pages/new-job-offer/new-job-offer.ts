@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { JobAnalysis } from '@/shared/model';
 import { JobAnalysisService } from '@/core/services/new-job-offer.service';
+import { UserSessionService } from '@/core/services/user-session.service';
 
 @Component({
   selector: 'app-new-job-offer',
@@ -15,6 +16,7 @@ import { JobAnalysisService } from '@/core/services/new-job-offer.service';
   templateUrl: './new-job-offer.html',
 })
 export class NewJobOfferComponent {
+  private session = inject(UserSessionService);
 
   form: FormGroup;
   analysisResult$ = new BehaviorSubject<JobAnalysis | null>(null);
@@ -43,11 +45,10 @@ export class NewJobOfferComponent {
     const url: string = this.form.value.jobUrl?.trim();
     if (!url) return;
 
-    const uid = localStorage.getItem('uid') || '';
+    const code = this.session.getUserCode() || '';
 
-    this.jobService.analyzeUrl(uid, url).subscribe({
+    this.jobService.analyzeUrl(code, url).subscribe({
       next: (result) => {
-        // direkt setzen → Async-Pipe aktualisiert die Anzeige
         this.analysisResult$.next(result);
       },
       error: (err) => {
@@ -61,9 +62,9 @@ export class NewJobOfferComponent {
     const text: string = this.form.value.jobText?.trim();
     if (!text) return;
 
-    const uid = localStorage.getItem('uid') || '';
+    const code = this.session.getUserCode() || '';
 
-    this.jobService.analyzeText(uid, text).subscribe({
+    this.jobService.analyzeText(code, text).subscribe({
       next: (result) => this.analysisResult$.next(result),
       error: (err) => {
         console.error('Fehler bei Text-Analyse:', err);
@@ -80,8 +81,8 @@ export class NewJobOfferComponent {
     const analysis = this.analysisResult$.value;
     if (!analysis) return;
 
-    const uid = localStorage.getItem('uid') || '';
-    this.jobService.saveAnalysis(uid, analysis).subscribe({
+    const code = this.session.getUserCode() || '';
+    this.jobService.saveAnalysis(code, analysis).subscribe({
       next: () => this.router.navigate([ '/' ]),
       error: err => console.error('Fehler beim Speichern:', err)
     });

@@ -45,20 +45,20 @@
     </button>
   </section>
 
-  <!-- Ergebnis / UID -->
-  @if (uid) {
+  <!-- Ergebnis / Code -->
+  @if (code) {
     <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
       <h3 class="text-xl text-white font-semibold">Ihre User-ID</h3>
       <p class="text-gray-300">
-        Bitte speichern oder notieren Sie diese ID.
+        Bitte speichern oder notieren Sie diesen Code.
       </p>
 
-      <div class="bg-gray-700 p-3 rounded-lg text-white font-mono text-lg">{{ uid }}</div>
+      <div class="bg-gray-700 p-3 rounded-lg text-white font-mono text-lg">{{ code }}</div>
 
       <div class="flex items-center gap-3 mt-4">
-        <input id="uidConfirmed" type="checkbox" [(ngModel)]="uidConfirmed" class="w-4 h-4" />
+        <input id="uidConfirmed" type="checkbox" [(ngModel)]="codeConfirmed" class="w-4 h-4" />
         <label for="uidConfirmed" class="text-gray-300 text-sm">
-          Ich habe die User-ID gespeichert/notiert.
+          Ich habe den Code gespeichert/notiert.
         </label>
       </div>
 

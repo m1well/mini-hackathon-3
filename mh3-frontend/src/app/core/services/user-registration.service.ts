@@ -18,7 +18,7 @@ export class UserRegistrationService {
       const data = await response.json();
       return data.uniqueCode ?? '1234';
     } catch (err) {
-      console.warn('Backend nicht erreichbar, Fallback UID wird genutzt.', err);
+      console.warn('Backend nicht erreichbar, Fallback Code wird genutzt.', err);
       return '1234';
     }
   }

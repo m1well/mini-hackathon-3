@@ -5,9 +5,9 @@ import { environment } from '../../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
 
-  async getProfile(uid: string): Promise<User> {
+  async getProfile(code: string): Promise<User> {
     try {
-      const res = await fetch(`${environment.apiUrl}/user/${uid}`);
+      const res = await fetch(`${environment.apiUrl}/user/${code}`);
       if (!res.ok) throw new Error('Backend Fehler');
       const data = await res.json();
       return data.techstack ? data : { ...data, techstack: [] };
@@ -24,7 +24,7 @@ export class ProfileService {
   }
 
   /** 🔥 NEU: Komplettes Profile via PUT speichern */
-  async updateFullProfile(uid: string, profile: User) {
+  async updateFullProfile(code: string, profile: User) {
     const payload = {
       currentJobTitle: profile.currentJobTitle,
       experienceYears: profile.experienceYears,
@@ -33,7 +33,7 @@ export class ProfileService {
     };
 
     try {
-      const res = await fetch(`${environment.apiUrl}/user/${uid}`, {
+      const res = await fetch(`${environment.apiUrl}/user/${code}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
