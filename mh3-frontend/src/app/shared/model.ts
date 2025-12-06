@@ -44,7 +44,7 @@ export type JobAnalysis = {
   analyzedViaUrl: boolean;
   location: string;
   summary: string;
-  techStack: string[];
+  techstack: string[];
   tasks: string;
   workingModel: string;
   experience: string;

@@ -73,4 +73,9 @@ export class Profile {
 
     await this.profileService.updateFullProfile(code, this.profile);
   }
+
+  goToDashboard() {
+  this.router.navigate(['/']);
+}
+
 }

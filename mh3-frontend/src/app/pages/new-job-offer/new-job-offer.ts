@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -15,6 +15,7 @@ import { UserSessionService } from '@/core/services/user-session.service';
   ],
   templateUrl: './new-job-offer.html',
 })
+
 export class NewJobOfferComponent {
   private session = inject(UserSessionService);
 
@@ -24,7 +25,8 @@ export class NewJobOfferComponent {
   constructor(
     private fb: FormBuilder,
     private jobService: JobAnalysisService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     this.form = this.fb.group({
       jobUrl: this.fb.control<string>('', Validators.required),
@@ -41,50 +43,62 @@ export class NewJobOfferComponent {
     return this.form.get('jobText') as FormControl;
   }
 
-  analyzeUrl(): void {
-    const url: string = this.form.value.jobUrl?.trim();
-    if (!url) return;
+analyzeUrl(): void {
+  const url: string = this.form.value.jobUrl?.trim();
+  if (!url) return;
 
-    const code = this.session.getUserCode() || '';
+  const code = this.session.getUserCode() || '';
 
-    this.jobService.analyzeUrl(code, url).subscribe({
-      next: (result) => {
-        this.analysisResult$.next(result);
-      },
-      error: (err) => {
-        console.error('Fehler bei URL-Analyse:', err);
-        this.analysisResult$.next(this.jobService.DUMMY_ANALYSIS);
-      }
+  this.jobService.analyzeUrl(code, url)
+    .then((result: JobAnalysis) => {
+      this.analysisResult$.next(result);
+      this.cdr.detectChanges();   // <<< wichtig
+    })
+    .catch((err: unknown) => {
+      console.error('Fehler bei analyzeUrl:', err);
     });
-  }
+}
 
-  analyzeText(): void {
-    const text: string = this.form.value.jobText?.trim();
-    if (!text) return;
+analyzeText(): void {
+  const text: string = this.form.value.jobText?.trim();
+  if (!text) return;
 
-    const code = this.session.getUserCode() || '';
+  const code = this.session.getUserCode() || '';
 
-    this.jobService.analyzeText(code, text).subscribe({
-      next: (result) => this.analysisResult$.next(result),
-      error: (err) => {
-        console.error('Fehler bei Text-Analyse:', err);
-        this.analysisResult$.next(this.jobService.DUMMY_ANALYSIS);
-      }
+  this.jobService.analyzeText(code, text)
+    .then((result: JobAnalysis) => {
+      this.analysisResult$.next(result);
+      this.cdr.detectChanges();  // <<< wichtig
+    })
+    .catch((err: unknown) => {
+      console.error('Fehler bei analyzeText:', err);
     });
-  }
+}
+
 
   discardAnalysis() {
     this.analysisResult$.next(null);
   }
 
-  saveAnalysis() {
-    const analysis = this.analysisResult$.value;
-    if (!analysis) return;
+saveAnalysis() {
+  const analysis = this.analysisResult$.value;
+  if (!analysis) return;
 
-    const code = this.session.getUserCode() || '';
-    this.jobService.saveAnalysis(code, analysis).subscribe({
-      next: () => this.router.navigate([ '/' ]),
-      error: err => console.error('Fehler beim Speichern:', err)
+  const code = this.session.getUserCode() || '';
+  
+  this.jobService.saveAnalysis(code, analysis)
+    .then(() => {
+      console.log('Gespeichert');
+      this.router.navigate(['/dashboard']); // <<< Weiterleitung nach Dashboard
+    })
+    .catch((err: unknown) => {
+      console.error('Fehler beim Speichern:', err);
     });
-  }
+}
+
+goToDashboard() {
+  this.router.navigate(['/']);
+}
+
+
 }

@@ -67,4 +67,9 @@ export class Registration {
     this.userSession.setUserCode(this.code!);
     this.router.navigate([ '/profile' ]);
   }
+
+  goBack() {
+  this.router.navigate(['/startpage']);
+}
+
 }

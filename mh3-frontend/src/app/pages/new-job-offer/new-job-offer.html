@@ -1,8 +1,10 @@
 <div class="w-[80vw] max-w-[1440px] mx-auto p-6 space-y-10">
-  <a routerLink="/"
-     class="text-white font-bold text-lg hover:underline transition cursor-pointer">
-    Zurück
-  </a>
+  <button
+  (click)="goToDashboard()"
+  class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg px-5 py-2 rounded-lg transition"
+>
+  Dashboard
+</button>
 
   <!-- URL Input -->
   <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
@@ -45,7 +47,7 @@
       <p class="text-white"><strong>Titel:</strong> {{ analysis.title }}</p>
       <p class="text-white"><strong>Firma:</strong> {{ analysis.company }}</p>
       <p class="text-white"><strong>Zusammenfassung:</strong> {{ analysis.summary }}</p>
-      <p class="text-white"><strong>Skills:</strong> {{ analysis.techStack.join(', ') }}</p>
+      <p class="text-white"><strong>Skills:</strong> {{ analysis.techstack.join(', ') }}</p>
 
       <p class="text-white"><strong>Benefits:</strong></p>
       <ul class="text-white list-disc list-inside">
