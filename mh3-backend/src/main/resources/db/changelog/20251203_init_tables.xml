@@ -29,37 +29,37 @@
                 <constraints primaryKey="true" nullable="false" primaryKeyName="job_pk"/>
             </column>
             <column name="created" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="unique_key" type="VARCHAR(70)">
+            <column name="unique_key" type="VARCHAR(90)">
                 <constraints nullable="false"/>
             </column>
             <column name="user_code" type="VARCHAR(9)">
                 <constraints nullable="false"/>
             </column>
-            <column name="title" type="VARCHAR(50)">
+            <column name="title" type="VARCHAR(130)">
                 <constraints nullable="false"/>
             </column>
-            <column name="company" type="VARCHAR(50)">
+            <column name="company" type="VARCHAR(70)">
                 <constraints nullable="false"/>
             </column>
             <column name="analyzed_via_url" type="TINYINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="status" type="VARCHAR(30)">
+            <column name="status" type="VARCHAR(40)">
                 <constraints nullable="false"/>
             </column>
-            <column name="location" type="VARCHAR(50)"/>
-            <column name="summary" type="VARCHAR(800)"/>
-            <column name="tasks" type="VARCHAR(300)"/>
-            <column name="working_model" type="VARCHAR(300)"/>
-            <column name="experience" type="VARCHAR(300)"/>
-            <column name="benefits" type="VARCHAR(300)"/>
-            <column name="culture" type="VARCHAR(300)"/>
-            <column name="salary_range" type="VARCHAR(100)"/>
+            <column name="location" type="VARCHAR(90)"/>
+            <column name="summary" type="VARCHAR(900)"/>
+            <column name="tasks" type="VARCHAR(500)"/>
+            <column name="working_model" type="VARCHAR(500)"/>
+            <column name="experience" type="VARCHAR(500)"/>
+            <column name="benefits" type="VARCHAR(500)"/>
+            <column name="culture" type="VARCHAR(500)"/>
+            <column name="salary_range" type="VARCHAR(130)"/>
             <column name="match_score" type="TINYINT"/>
-            <column name="match_reasoning" type="VARCHAR(500)"/>
-            <column name="url_job" type="VARCHAR(100)"/>
+            <column name="match_reasoning" type="VARCHAR(800)"/>
+            <column name="url_job" type="VARCHAR(200)"/>
             <column name="url_company" type="VARCHAR(100)"/>
-            <column name="url_company_logo" type="VARCHAR(300)"/>
+            <column name="url_company_logo" type="VARCHAR(400)"/>
             <column name="url_kununu" type="VARCHAR(100)"/>
             <column name="url_linkedin" type="VARCHAR(100)"/>
             <column name="comment" type="VARCHAR(400)"/>

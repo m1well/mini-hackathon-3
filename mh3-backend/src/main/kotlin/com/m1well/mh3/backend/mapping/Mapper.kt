@@ -69,7 +69,7 @@ class Mapper {
             currentJobTitle = entity.currentJobTitle,
             experienceYears = entity.experienceYears,
             preferences = entity.preferences,
-            techstack = entity.techstack,
+            techstack = entity.techstack?.sortedBy { it.lowercase() }?.toMutableList(),
         )
 
         fun toDto(entity: JobEntity) = JobViewResponseDto(
@@ -80,7 +80,7 @@ class Mapper {
             status = entity.status,
             location = entity.location,
             summary = entity.summary,
-            techstack = entity.techstack,
+            techstack = entity.techstack?.sortedBy { it.lowercase() }?.toMutableList(),
             tasks = entity.tasks,
             workingModel = entity.workingModel,
             experience = entity.experience,

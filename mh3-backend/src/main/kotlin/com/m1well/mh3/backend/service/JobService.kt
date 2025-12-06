@@ -18,7 +18,9 @@ class JobService(private val repo: JobRepo, private val userService: UserService
 
     fun getAllJobsForUser(userCode: String): List<JobViewResponseDto> {
         val userExist = userService.getUserForCode(userCode)
-        return repo.findAllByUserCode(userCode).map { Mapper.toDto(it) }
+        return repo.findAllByUserCode(userCode)
+            .sortedBy { it.created } // TODO better sorting (status, date, ...)
+            .map { Mapper.toDto(it) }
     }
 
     fun saveJob(userCode: String, dto: JobSaveRequestDto): JobViewResponseDto {
