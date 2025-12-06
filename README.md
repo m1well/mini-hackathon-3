@@ -44,5 +44,5 @@ Unsere Interpretation des MiniHackathon 3.0
 
 ## Maintainer
 
-* Michael W. [m1well](https://github.com/m1well)
-* Sascha N. [cyborg-s](https://github.com/cyborg-s)
+* Backend: Michael W. [m1well](https://github.com/m1well)
+* Frontend: Sascha N. [cyborg-s](https://github.com/cyborg-s)

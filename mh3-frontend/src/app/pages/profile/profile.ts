@@ -1,81 +1,120 @@
-import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { User } from '@/shared/model';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProfileService } from '@/core/services/profile.service';
 import { UserSessionService } from '@/core/services/user-session.service';
+import { User } from '@/shared/model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ FormsModule, RouterModule ],
+  imports: [ FormsModule ],
   templateUrl: './profile.html',
 })
-export class Profile {
-  profile: User = { firstName: '', currentJobTitle: '', experienceYears: 0, preferences: '', techstack: [] };
-  editing = false;
-  newSkillName = '';
+export class Profile implements OnInit {
+  private router = inject(Router);
+  private profileService = inject(ProfileService);
+  private session = inject(UserSessionService);
 
-  constructor(
-    private router: Router,
-    private profileService: ProfileService,
-    private userSession: UserSessionService,
-    private cd: ChangeDetectorRef,
-    private ngZone: NgZone
-  ) {
-  }
+  // 1. State als Signals
+  profile = signal<User>({
+    firstName: '',
+    currentJobTitle: '',
+    experienceYears: 0,
+    preferences: '',
+    techstack: []
+  });
+
+  editing = signal(false);
+  newSkillName = signal('');
+
+  // Backup for reset
+  private backupProfile: User | null = null;
 
   async ngOnInit() {
-    const code = this.userSession.getUserCode();
-
-    const realCode = code || 'fallback';
-    const loaded = await this.profileService.getProfile(realCode);
-
-    // wichtig: neues Objekt erzeugen → damit Angular Change-Detection sicher anspringt
-    this.profile = { ...loaded };
-
-    this.cd.detectChanges();
+    await this.loadData();
   }
+
+  async loadData() {
+    const code = this.session.getUserCode();
+    if (!code) return;
+
+    const data = await this.profileService.getProfile(code)
+    if (data) {
+      this.profile.set(data);
+    }
+  }
+
+  // --- EDIT MODUS ---
 
   editProfile() {
-    this.editing = true;
+    this.backupProfile = structuredClone(this.profile());
+    this.editing.set(true);
   }
 
-  /** 🔥 Komplettes Profile speichern */
+  cancelProfile() {
+    // reset profile from backup
+    if (this.backupProfile) {
+      this.profile.set(structuredClone(this.backupProfile));
+    }
+    this.editing.set(false);
+  }
+
   async saveProfile() {
-    const code = this.userSession.getUserCode();
+    const code = this.session.getUserCode();
     if (!code) return;
 
-    await this.profileService.updateFullProfile(code, this.profile);
-    this.editing = false;
+    try {
+      await this.profileService.updateFullProfile(code, this.profile());
+
+      this.editing.set(false);
+      this.backupProfile = null;
+    } catch (e) {
+      console.error("Fehler beim Speichern", e);
+    }
   }
 
-  /** 🔥 Skill hinzufügen → danach gesamtes Profile speichern */
+  // --- SKILLS ---
+
   async addSkill() {
-    const skillName = this.newSkillName.trim();
+    const skillName = this.newSkillName().trim();
+
     if (!skillName) return;
 
-    this.profile.techstack.push(skillName);
-    this.newSkillName = '';
+    // check if skill is already in list
+    const alreadyExists = this.profile().techstack.some(
+      existingSkill => existingSkill.toLowerCase() === skillName.toLowerCase()
+    );
 
-    const code = this.userSession.getUserCode();
-    if (!code) return;
+    if (alreadyExists) {
+      alert(`Der Skill "${ skillName }" ist bereits in deiner Liste!`);
+      return;
+    }
 
-    await this.profileService.updateFullProfile(code, this.profile);
+    this.profile().techstack.push(skillName);
+    this.newSkillName.set(''); // Input leeren
+    const code = this.session.getUserCode();
+    if (code) {
+      await this.profileService.updateFullProfile(code, this.profile());
+    }
   }
 
-  /** 🔥 Skill löschen → danach gesamtes Profile speichern */
   async deleteSkill(index: number) {
-    this.profile.techstack.splice(index, 1);
+    this.profile.update(p => ({
+      ...p,
+      techstack: p.techstack.filter((_, i) => i !== index)
+    }));
 
-    const code = this.userSession.getUserCode();
+    await this.saveProfileSilent();
+  }
+
+  private async saveProfileSilent() {
+    const code = this.session.getUserCode();
     if (!code) return;
-
-    await this.profileService.updateFullProfile(code, this.profile);
+    await this.profileService.updateFullProfile(code, this.profile());
   }
 
   goToDashboard() {
-  this.router.navigate(['/']);
-}
-
+    this.router.navigate([ '/' ]);
+  }
 }

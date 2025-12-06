@@ -37,31 +37,4 @@ export class JobOfferService {
     if (!res.ok) throw new Error('Backend Fehler beim Update des Jobs');
   }
 
-  async deleteOffer(userCode: string, jobKey: string) {
-    // Backend unterstützt aktuell kein DELETE → wir könnten Status auf "Deleted" setzen oder PUT nutzen
-    await this.updateOffer(userCode, {
-      uniqueKey: jobKey,
-      urlJob: undefined,
-      urlCompany: undefined,
-      urlCompanyLogo: undefined,
-      urlKununu: undefined,
-      urlLinkedin: undefined,
-      title: '',
-      company: '',
-      analyzedViaUrl: false,
-      location: '',
-      summary: '',
-      techstack: [],
-      tasks: '',
-      workingModel: '',
-      experience: '',
-      benefits: '',
-      culture: '',
-      salaryRange: '',
-      matchScore: 0,
-      matchReasoning: '',
-      status: 'DELETED',
-      comment: ''
-    });
-  }
 }
