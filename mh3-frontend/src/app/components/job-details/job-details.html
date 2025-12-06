@@ -1,0 +1,127 @@
+<div class="bg-slate-900/80 border-t border-slate-700 px-6 py-6 animate-fade-in-down">
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+    <div class="space-y-6">
+
+      <!-- KI summary -->
+      <div class="bg-slate-800 p-4 rounded-lg border border-slate-700 relative">
+        <div
+          class="absolute -top-3 left-4 bg-slate-700 px-2 text-xs font-bold text-emerald-400 rounded uppercase">
+          KI Zusammenfassung
+        </div>
+        <p class="text-slate-300 leading-relaxed text-sm mt-1">{{ offer().summary }}</p>
+      </div>
+
+      <!-- Keyfacts -->
+      <div>
+        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Keyfacts</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+          <div class="md:col-span-2  bg-slate-800/50 p-3 rounded border border-slate-700/50">
+            <span class="text-slate-500 block text-xs mb-1">Aufgaben</span>
+            <span class="text-slate-200">{{ offer().tasks }}</span>
+          </div>
+          <div class="bg-slate-800/50 p-3 rounded border border-slate-700/50">
+            <span class="text-slate-500 block text-xs mb-1">Erfahrung</span>
+            <span class="text-slate-200">{{ offer().experience }}</span>
+          </div>
+          <div class="bg-slate-800/50 p-3 rounded border border-slate-700/50">
+            <span class="text-slate-500 block text-xs mb-1">Arbeitsmodell</span>
+            <span class="text-slate-200">{{ offer().workingModel }}</span>
+          </div>
+          <div class="bg-slate-800/50 p-3 rounded border border-slate-700/50">
+            <span class="text-slate-500 block text-xs mb-1">Benefits</span>
+            <span class="text-slate-200">{{ offer().benefits }}</span>
+          </div>
+          <div class="bg-slate-800/50 p-3 rounded border border-slate-700/50">
+            <span class="text-slate-500 block text-xs mb-1">Kultur</span>
+            <span class="text-slate-200">{{ offer().culture }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+
+      <!-- Match Logic -->
+      <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+        <h3 class="text-sm font-bold text-white mb-2 flex justify-between">
+          KI Match Analyse
+          <span class="text-emerald-400">{{ offer().matchScore }}%</span>
+        </h3>
+        <p class="text-xs text-slate-400 italic">"{{ offer().matchReasoning }}"</p>
+      </div>
+
+      <!-- Techstack badges -->
+      <div>
+        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Tech Stack</h3>
+        <div class="flex flex-wrap gap-2">
+          @for (skill of offer().techstack; track skill) {
+            <span
+              class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-xs transition cursor-default">
+                          {{ skill }}
+                        </span>
+          }
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div>
+        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Bewerbungsstatus</label>
+        <select
+          class="w-full p-3 bg-slate-950 text-white rounded-lg border border-slate-700 focus:border-blue-500 outline-none cursor-pointer"
+          [(ngModel)]="offer().status">
+          <option>Neu</option>
+          <option>Beworben</option>
+          <option>Kennenlernen</option>
+          <option>Vorstellungsgespräch</option>
+          <option>Teamgespräch</option>
+          <option>Challenge</option>
+          <option>Zusage</option>
+          <option>Absage</option>
+        </select>
+      </div>
+
+      <!-- Comment -->
+      <div>
+        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Dein Kommentar</label>
+        <textarea
+          class="w-full p-3 bg-slate-950 text-slate-200 rounded-lg border border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none text-sm transition"
+          rows="5"
+          [(ngModel)]="offer().comment"
+          placeholder="Notizen zum Bewerbungsgespräch..."></textarea>
+      </div>
+
+      <div class="flex justify-end pt-2">
+        <button
+          (click)="saveChanges()"
+          [disabled]="isSaving()"
+          class="flex items-center gap-2 px-6 py-2.5 rounded-lg font-bold shadow-lg transition-all duration-300 transform active:scale-95 text-white min-w-[180px] justify-center"
+          [ngClass]="{
+      'bg-slate-600 cursor-wait': isSaving(),
+      'bg-green-500 hover:bg-green-600': isSavedSuccess(),
+      'bg-emerald-600 hover:bg-emerald-700': !isSaving() && !isSavedSuccess()
+    }">
+
+          @if (isSaving()) {
+            <!-- Spinner -->
+            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Speichere...</span>
+          } @else if (isSavedSuccess()) {
+            <span class="text-xl">✓</span>
+            <span>Gespeichert!</span>
+          } @else {
+            <span>💾 Änderungen speichern</span>
+          }
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

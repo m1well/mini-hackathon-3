@@ -5,6 +5,7 @@ import { JobOffer } from '@/shared/model';
 import { JobOfferService } from '@/core/services/joboffer.service';
 import { UserSessionService } from '@/core/services/user-session.service';
 import { NgClass } from '@angular/common';
+import { JobDetails } from '@/components/job-details/job-details';
 
 @Component({
   selector: 'app-main',
@@ -12,7 +13,8 @@ import { NgClass } from '@angular/common';
     ReactiveFormsModule,
     RouterLink,
     FormsModule,
-    NgClass
+    NgClass,
+    JobDetails
   ],
   templateUrl: './main.html',
   styleUrl: './main.css',
@@ -20,9 +22,6 @@ import { NgClass } from '@angular/common';
 export class Main implements OnInit {
   offers: JobOffer[] = [];
   selectedOffer: JobOffer | null = null;
-
-  isSaving = false;
-  isSavedSuccess = false;
 
   constructor(
     private jobOfferService: JobOfferService,
@@ -47,29 +46,4 @@ export class Main implements OnInit {
     this.selectedOffer = this.selectedOffer === offer ? null : offer;
   }
 
-  async saveChanges(offer: JobOffer) {
-    const code = this.userSession.getUserCode();
-    if (!code) return;
-
-    this.isSaving = true;
-    this.isSavedSuccess = false;
-
-    try {
-      await this.jobOfferService.updateOffer(code, offer);
-
-      this.isSavedSuccess = true;
-
-      setTimeout(() => {
-        this.isSavedSuccess = false;
-        this.cd.detectChanges();
-      }, 2000);
-
-    } catch (e) {
-      console.error('Fehler beim Speichern', e);
-      alert('Fehler beim Speichern!');
-    } finally {
-      this.isSaving = false;
-      this.cd.detectChanges();
-    }
-  }
 }
