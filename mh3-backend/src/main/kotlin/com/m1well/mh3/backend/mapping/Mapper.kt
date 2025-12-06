@@ -9,7 +9,7 @@ class Mapper {
     // TODO check usage of Mapstruct here
 
     companion object {
-        fun toNewEntity(dto: UserSaveRequestDto, code: String) = UserEntity(
+        fun toNewEntity(code: String, dto: UserSaveRequestDto) = UserEntity(
             uniqueCode = code,
             firstName = dto.firstName,
             currentJobTitle = dto.currentJobTitle,
@@ -24,6 +24,7 @@ class Mapper {
             title = dto.title,
             company = dto.company,
             analyzedViaUrl = dto.analyzedViaUrl,
+            status = "NEU",
             location = dto.location,
             summary = dto.summary,
             techstack = dto.techstack,
@@ -36,10 +37,11 @@ class Mapper {
             matchScore = dto.matchScore,
             matchReasoning = dto.matchReasoning,
             urlJob = dto.urlJob,
-            urlCompany = dto.urlCompany,
-            urlCompanyLogo = dto.urlCompanyLogo,
-            urlKununu = dto.urlKununu,
-            urlLinkedin = dto.urlLinkedin,
+            urlCompany = null,
+            urlCompanyLogo = null,
+            urlKununu = null,
+            urlLinkedin = null,
+            comment = null,
         )
 
         fun toUpdateEntity(dto: UserUpdateRequestDto, existing: UserEntity): UserEntity {
@@ -52,10 +54,12 @@ class Mapper {
 
         fun toUpdateEntity(dto: JobUpdateRequestDto, existing: JobEntity): JobEntity {
             existing.urlJob = dto.urlJob
+            existing.status = dto.status
             existing.urlCompany = dto.urlCompany
             existing.urlCompanyLogo = dto.urlCompanyLogo
             existing.urlKununu = dto.urlKununu
             existing.urlLinkedin = dto.urlLinkedin
+            existing.comment = dto.comment
             return existing
         }
 
@@ -73,6 +77,7 @@ class Mapper {
             title = entity.title,
             company = entity.company,
             analyzedViaUrl = entity.analyzedViaUrl,
+            status = entity.status,
             location = entity.location,
             summary = entity.summary,
             techstack = entity.techstack,
@@ -89,6 +94,7 @@ class Mapper {
             urlCompanyLogo = entity.urlCompanyLogo,
             urlKununu = entity.urlKununu,
             urlLinkedin = entity.urlLinkedin,
+            comment = entity.comment
         )
     }
 

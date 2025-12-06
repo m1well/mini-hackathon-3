@@ -44,6 +44,9 @@
             <column name="analyzed_via_url" type="TINYINT">
                 <constraints nullable="false"/>
             </column>
+            <column name="status" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
             <column name="location" type="VARCHAR(50)"/>
             <column name="summary" type="VARCHAR(800)"/>
             <column name="tasks" type="VARCHAR(300)"/>
@@ -59,6 +62,7 @@
             <column name="url_company_logo" type="VARCHAR(300)"/>
             <column name="url_kununu" type="VARCHAR(100)"/>
             <column name="url_linkedin" type="VARCHAR(100)"/>
+            <column name="comment" type="VARCHAR(400)"/>
         </createTable>
     </changeSet>
 

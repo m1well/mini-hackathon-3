@@ -18,15 +18,15 @@ export class JobOfferService {
 
   async updateOffer(userCode: string, job: JobOffer) {
     const payload = {
-  uniqueKey: job.uniqueKey,
-  status: job.status, // <-- hier hinzufügen
-  urlJob: job.urlJob,
-  urlCompany: job.urlCompany,
-  urlCompanyLogo: job.urlCompanyLogo,
-  urlKununu: job.urlKununu,
-  urlLinkedin: job.urlLinkedin
-};
-
+      uniqueKey: job.uniqueKey,
+      status: job.status,
+      urlJob: job.urlJob,
+      urlCompany: job.urlCompany,
+      urlCompanyLogo: job.urlCompanyLogo,
+      urlKununu: job.urlKununu,
+      urlLinkedin: job.urlLinkedin,
+      comment: job.comment,
+    };
 
     const res = await fetch(`${ environment.apiUrl }/job/${ userCode }`, {
       method: 'PUT',

@@ -17,8 +17,4 @@ data class JobSaveRequestDto(
     val matchScore: Int,
     val matchReasoning: String,
     val urlJob: String?,
-    val urlCompany: String?,
-    val urlCompanyLogo: String?,
-    val urlKununu: String?,
-    val urlLinkedin: String?,
 )

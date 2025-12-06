@@ -21,7 +21,7 @@ class UserService(private val repo: UserRepo) {
 
 
     fun createUser(dto: UserSaveRequestDto): UserViewResponseDto {
-        val saved = repo.save(Mapper.toNewEntity(dto, generateRandomUniqueCode()))
+        val saved = repo.save(Mapper.toNewEntity(generateRandomUniqueCode(), dto))
         return Mapper.toDto(saved)
     }
 

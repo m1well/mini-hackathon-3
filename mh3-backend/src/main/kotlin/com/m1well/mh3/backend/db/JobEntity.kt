@@ -29,6 +29,9 @@ class JobEntity(
     @Column(nullable = false)
     val analyzedViaUrl: Boolean,
 
+    @Column(nullable = false)
+    var status: String,
+
     val location: String?,
     val summary: String,
     val tasks: String,
@@ -44,6 +47,7 @@ class JobEntity(
     var urlCompanyLogo: String?,
     var urlKununu: String?,
     var urlLinkedin: String?,
+    var comment: String?,
 
     @ElementCollection @CollectionTable(
         name = "job_techstack",

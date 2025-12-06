@@ -18,7 +18,7 @@ class JobController(private val service: JobService, private val analysis: Analy
         ResponseEntity.ok(service.getAllJobsForUser(userCode))
 
     @PostMapping("/{userCode}")
-    fun saveJob(@PathVariable userCode: String, @RequestBody request: JobSaveRequestDto) =
+    fun saveAnalyzedJob(@PathVariable userCode: String, @RequestBody request: JobSaveRequestDto) =
         ResponseEntity.status(201).body(service.saveJob(userCode, request))
 
     @PutMapping("/{userCode}")

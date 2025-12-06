@@ -5,6 +5,7 @@ data class JobViewResponseDto(
     val title: String,
     val company: String,
     val analyzedViaUrl: Boolean,
+    val status: String,
     val location: String?,
     val summary: String,
     val techstack: MutableList<String>?,
@@ -21,4 +22,5 @@ data class JobViewResponseDto(
     val urlCompanyLogo: String?,
     val urlKununu: String?,
     val urlLinkedin: String?,
+    val comment: String?,
 )
