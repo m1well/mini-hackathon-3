@@ -28,7 +28,8 @@ export class Main implements OnInit {
     private jobOfferService: JobOfferService,
     private userSession: UserSessionService,
     private cd: ChangeDetectorRef,
-  ) {}
+  ) {
+  }
 
   async ngOnInit() {
     await this.loadData();
@@ -43,37 +44,29 @@ export class Main implements OnInit {
   }
 
   toggleDetails(offer: JobOffer) {
-    // Wenn wir Details wechseln, laden wir nicht neu, da wir Änderungen ja lokal halten wollen,
-    // bis gespeichert wird.
     this.selectedOffer = this.selectedOffer === offer ? null : offer;
   }
 
-  /**
-   * 🔥 Zentrale Speicher-Methode
-   * Speichert ALLES (Status + Kommentar) für das ausgewählte Angebot.
-   */
   async saveChanges(offer: JobOffer) {
     const code = this.userSession.getUserCode();
     if (!code) return;
 
     this.isSaving = true;
-    this.isSavedSuccess = false; // Reset vor neuem Versuch
+    this.isSavedSuccess = false;
 
     try {
       await this.jobOfferService.updateOffer(code, offer);
 
-      // Erfolgs-Status aktivieren
       this.isSavedSuccess = true;
 
-      // Nach 2 Sekunden wieder zurücksetzen
       setTimeout(() => {
         this.isSavedSuccess = false;
-        this.cd.detectChanges(); // UI Update erzwingen
+        this.cd.detectChanges();
       }, 2000);
 
     } catch (e) {
       console.error('Fehler beim Speichern', e);
-      alert('Fehler beim Speichern!'); // Bei Fehler darf es nerven (Alert)
+      alert('Fehler beim Speichern!');
     } finally {
       this.isSaving = false;
       this.cd.detectChanges();

@@ -24,7 +24,7 @@ class Mapper {
             title = dto.title,
             company = dto.company,
             analyzedViaUrl = dto.analyzedViaUrl,
-            status = "NEU",
+            status = "Neu",
             location = dto.location,
             summary = dto.summary,
             techstack = dto.techstack,

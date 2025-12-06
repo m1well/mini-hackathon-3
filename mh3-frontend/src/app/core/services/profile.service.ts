@@ -23,7 +23,6 @@ export class ProfileService {
     }
   }
 
-  /** 🔥 NEU: Komplettes Profile via PUT speichern */
   async updateFullProfile(code: string, profile: User) {
     const payload = {
       currentJobTitle: profile.currentJobTitle,

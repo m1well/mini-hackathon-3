@@ -10,28 +10,28 @@
   <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-6">
     <div class="flex flex-col gap-2">
       <label class="text-gray-300" for="regName">Vorname</label>
-      <input id="regName" type="text" placeholder="Ihr Name"
+      <input id="regName" type="text" placeholder="Dein Vorname"
              [(ngModel)]="name"
              class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none" />
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="text-gray-300" for="regJob">Jobtitel</label>
-      <input id="regJob" type="text" placeholder="Ihr Jobtitel"
+      <label class="text-gray-300" for="regJob">Aktueller Jobtitel</label>
+      <input id="regJob" type="text" placeholder="z.B. Softwareentwickler"
              [(ngModel)]="job"
              class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none" />
     </div>
 
     <div class="flex flex-col gap-2">
       <label class="text-gray-300" for="regExp">Erfahrungsjahre</label>
-      <input id="regExp" type="number" min="0" placeholder="z. B. 3"
+      <input id="regExp" type="number" min="0" placeholder="z.B. 3"
              [(ngModel)]="exp"
              class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none" />
     </div>
 
     <div class="flex flex-col gap-2">
       <label class="text-gray-300" for="regJob">Präferenzen</label>
-      <input id="regJob" type="text" placeholder="Ihre Präferenzen"
+      <input id="regJob" type="text" placeholder="z.B. CI/CD, Fullstack, Clean Code, ..."
              [(ngModel)]="preferences"
              class="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none" />
     </div>
@@ -53,9 +53,9 @@
   <!-- Ergebnis / Code -->
   @if (code) {
     <section class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
-      <h3 class="text-xl text-white font-semibold">Ihre User-ID</h3>
+      <h3 class="text-xl text-white font-semibold">Dein Code</h3>
       <p class="text-gray-300">
-        Bitte speichern oder notieren Sie diesen Code.
+        Bitte speicher oder notiere dir diesen Code.
       </p>
 
       <div class="bg-gray-700 p-3 rounded-lg text-white font-mono text-lg">{{ code }}</div>

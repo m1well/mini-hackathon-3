@@ -5,100 +5,134 @@ import { BehaviorSubject } from 'rxjs';
 import { JobAnalysis } from '@/shared/model';
 import { JobAnalysisService } from '@/core/services/new-job-offer.service';
 import { UserSessionService } from '@/core/services/user-session.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-new-job-offer',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    NgClass
   ],
   templateUrl: './new-job-offer.html',
 })
-
 export class NewJobOfferComponent {
+
+  private fb = inject(FormBuilder);
+  private jobService = inject(JobAnalysisService);
   private session = inject(UserSessionService);
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
-  form: FormGroup;
+  // State
   analysisResult$ = new BehaviorSubject<JobAnalysis | null>(null);
+  isLoading = false; // Steuert dein Overlay
 
-  constructor(
-    private fb: FormBuilder,
-    private jobService: JobAnalysisService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
-  ) {
-    this.form = this.fb.group({
-      jobUrl: this.fb.control<string>('', Validators.required),
-      jobText: this.fb.control<string>('', Validators.required)
-    });
-  }
+  jobUrlControl = new FormControl('', [Validators.required, Validators.pattern('https?://.+')]);
+  jobTextControl = new FormControl('', [Validators.required, Validators.minLength(50)]);
 
-  // Getter für FormControls (Variante 3)
-  get jobUrlControl(): FormControl {
-    return this.form.get('jobUrl') as FormControl;
-  }
 
-  get jobTextControl(): FormControl {
-    return this.form.get('jobText') as FormControl;
-  }
+  // --- ACTIONS ---
+  async analyzeUrl() {
+    if (this.jobUrlControl.invalid) return;
 
-analyzeUrl(): void {
-  const url: string = this.form.value.jobUrl?.trim();
-  if (!url) return;
+    const url = this.jobUrlControl.value?.trim();
+    if (!url) return;
 
-  const code = this.session.getUserCode() || '';
+    this.startLoading();
 
-  this.jobService.analyzeUrl(code, url)
-    .then((result: JobAnalysis) => {
+    try {
+      const code = this.getUserCodeOrRedirect();
+      if (!code) return;
+
+      const result = await this.jobService.analyzeUrl(code, url);
       this.analysisResult$.next(result);
-      this.cdr.detectChanges();   // <<< wichtig
-    })
-    .catch((err: unknown) => {
-      console.error('Fehler bei analyzeUrl:', err);
-    });
-}
 
-analyzeText(): void {
-  const text: string = this.form.value.jobText?.trim();
-  if (!text) return;
+    } catch (err) {
+      console.error('Fehler bei URL Analyse:', err);
+      alert('Die KI konnte die URL nicht analysieren. Versuche den Text manuell zu kopieren.');
+    } finally {
+      this.stopLoading();
+    }
+  }
 
-  const code = this.session.getUserCode() || '';
+  async analyzeText() {
+    if (this.jobTextControl.invalid) return;
 
-  this.jobService.analyzeText(code, text)
-    .then((result: JobAnalysis) => {
+    const text = this.jobTextControl.value?.trim();
+    if (!text) return;
+
+    this.startLoading();
+
+    try {
+      const code = this.getUserCodeOrRedirect();
+      if (!code) return;
+
+      const result = await this.jobService.analyzeText(code, text);
       this.analysisResult$.next(result);
-      this.cdr.detectChanges();  // <<< wichtig
-    })
-    .catch((err: unknown) => {
-      console.error('Fehler bei analyzeText:', err);
-    });
-}
 
+    } catch (err) {
+      console.error('Fehler bei Text Analyse:', err);
+      alert('Fehler bei der Analyse. Bitte versuche es erneut.');
+    } finally {
+      this.stopLoading();
+    }
+  }
+
+  async saveAnalysis() {
+    const analysis = this.analysisResult$.value;
+    if (!analysis) return;
+
+    this.startLoading(); // Auch beim Speichern kurz Spinner zeigen
+
+    try {
+      const code = this.getUserCodeOrRedirect();
+      if (!code) return;
+
+      await this.jobService.saveAnalysis(code, analysis);
+
+      // Erfolg! Zurück zum Dashboard
+      this.router.navigate(['/']);
+
+    } catch (err) {
+      console.error('Fehler beim Speichern:', err);
+      alert('Speichern fehlgeschlagen.');
+    } finally {
+      this.stopLoading();
+    }
+  }
 
   discardAnalysis() {
+    // Reset State
     this.analysisResult$.next(null);
+    this.jobUrlControl.reset();
+    this.jobTextControl.reset();
   }
 
-saveAnalysis() {
-  const analysis = this.analysisResult$.value;
-  if (!analysis) return;
+  goToDashboard() {
+    this.router.navigate(['/']);
+  }
 
-  const code = this.session.getUserCode() || '';
-  
-  this.jobService.saveAnalysis(code, analysis)
-    .then(() => {
-      console.log('Gespeichert');
-      this.router.navigate(['/dashboard']); // <<< Weiterleitung nach Dashboard
-    })
-    .catch((err: unknown) => {
-      console.error('Fehler beim Speichern:', err);
-    });
-}
+  // --- HELPER ---
 
-goToDashboard() {
-  this.router.navigate(['/']);
-}
+  private startLoading() {
+    this.isLoading = true;
+    this.cdr.detectChanges(); // UI Update erzwingen
+  }
 
+  private stopLoading() {
+    this.isLoading = false;
+    this.cdr.detectChanges();
+  }
 
+  private getUserCodeOrRedirect(): string | null {
+    const code = this.session.getUserCode();
+    if (!code) {
+      alert('Session abgelaufen. Bitte neu anmelden.');
+      this.router.navigate(['/register']);
+      return null;
+    }
+    return code;
+  }
 }

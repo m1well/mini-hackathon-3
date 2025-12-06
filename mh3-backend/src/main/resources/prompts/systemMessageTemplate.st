@@ -18,6 +18,6 @@ FINALE AUFGABE:
 5. Fasse die Stelle in 4-5 Sätzen zusammen
 6. Extrahiere den Tech-Stack - aber bitte nur vernünftige Technologien wie aus dem oben genannten Beispiel
 7. Extrahiere zusätzlich noch folgende spezifischen Punkte (jeden Unterpunkt auf 300 Zeichen begrenzen): Aufgaben, Arbeitsmodell, benötigte Erfahrung, generelle Benefits, Kultur
-8. Falls eine Gehaltsangabe im Text zu finden ist, extrahiere diese auch - wenn nicht, lass das Feld leer
+8. Falls eine Gehaltsangabe im Text zu finden ist, extrahiere diese auch - wenn nicht, schreib bitte rein 'Unbekannt'
 9. Berechne einen Match-Score (0-100) basierend auf dem mitgegebenen Profil
 10. Begründe den Score kurz (bitte begrenze es auf 500 Zeichen)

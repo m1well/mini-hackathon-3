@@ -12,7 +12,7 @@ export class JobOfferService {
     return data.map(o => ({
       ...o,
       comment: o.comment ?? '',
-      status: o.status ?? 'NEU'
+      status: o.status ?? 'Neu'
     }));
   }
 
