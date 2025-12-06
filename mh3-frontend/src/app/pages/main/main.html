@@ -65,17 +65,23 @@
               </ul>
             </div>
 
-            <!-- Benefits -->
+            <!-- Keyfacts -->
             <div>
-              <h3 class="text-xl text-white font-semibold mb-2">Benefits</h3>
+              <h3 class="text-xl text-white font-semibold mb-2">Keyfacts</h3>
               <ul class="list-disc list-inside text-gray-300">
-                <li>{{ offer.benefits }}</li>
+                <li><strong>Aufgaben:</strong> {{ offer.tasks }}</li>
+                <li><strong>Arbeitsmodell:</strong> {{ offer.workingModel }}</li>
+                <li><strong>Erfahrung:</strong> {{ offer.experience }}</li>
+                <li><strong>Benefits:</strong> {{ offer.benefits }}</li>
+                <li><strong>Kultur:</strong> {{ offer.culture }}</li>
               </ul>
             </div>
 
             <!-- Match Reasoning -->
             <div>
-              <h3 class="text-xl text-white font-semibold mb-2">Match Begründung</h3>
+              <h3 class="text-xl text-white font-semibold mb-2">KI Match</h3>
+              <p class="text-gray-300"><strong>Score:</strong> {{ offer.matchScore }}%</p>
+              <p class="text-gray-300">Begründung:</p>
               <p class="text-gray-300">{{ offer.matchReasoning }}</p>
             </div>
 
