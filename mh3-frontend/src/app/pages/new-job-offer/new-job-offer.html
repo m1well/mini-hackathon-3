@@ -16,7 +16,6 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start relative">
 
-      <!-- ODER Divider (nur Desktop) -->
       <div class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2 z-10">
         <div class="h-12 w-px bg-slate-700"></div>
         <span class="bg-slate-900 text-slate-500 text-xs font-bold px-2 py-1 rounded border border-slate-700">ODER</span>
@@ -215,7 +214,28 @@
       <p class="text-slate-400 text-sm">
         Der CareerStack Agent liest gerade die Stellenanzeige und matcht sie mit deinem Profil.
       </p>
-      <p class="text-slate-500 text-xs mt-4 animate-pulse">Dies kann bis zu 30 Sek. dauern...</p>
+      <p class="text-slate-500 text-xs mt-4 animate-pulse">Dies kann schon über 30 Sekunden dauern...</p>
+    </div>
+  </div>
+}
+
+@if (toastMessage) {
+  <div class="fixed bottom-5 right-5 z-[60] animate-fade-in-up max-w-sm w-full">
+    <div
+      class="flex items-center gap-3 p-4 rounded-lg shadow-2xl border"
+      [ngClass]="{
+	        'bg-rose-900/95 border-rose-700 text-rose-100': toastType === 'error',
+	        'bg-emerald-900/95 border-emerald-700 text-emerald-100': toastType === 'success'
+	      }">
+
+      <div class="text-2xl">
+        @if (toastType === 'error') { ⚠️ }
+        @else { ✅ }
+      </div>
+      <div class="flex-1 text-sm font-medium">
+        {{ toastMessage }}
+      </div>
+      <button (click)="toastMessage = null" class="opacity-70 hover:opacity-100">✕</button>
     </div>
   </div>
 }

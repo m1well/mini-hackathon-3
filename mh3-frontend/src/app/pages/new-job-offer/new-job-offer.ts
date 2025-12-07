@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { JobAnalysis } from '@/shared/model';
@@ -19,19 +19,31 @@ import { NgClass } from '@angular/common';
 })
 export class NewJobOfferComponent {
 
-  private fb = inject(FormBuilder);
   private jobService = inject(JobAnalysisService);
   private session = inject(UserSessionService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
-  // State
   analysisResult$ = new BehaviorSubject<JobAnalysis | null>(null);
-  isLoading = false; // Steuert dein Overlay
+  isLoading = false;
 
-  jobUrlControl = new FormControl('', [Validators.required, Validators.pattern('https?://.+')]);
-  jobTextControl = new FormControl('', [Validators.required, Validators.minLength(50)]);
+  jobUrlControl = new FormControl('', [ Validators.required, Validators.pattern('https?://.+') ]);
+  jobTextControl = new FormControl('', [ Validators.required, Validators.minLength(50) ]);
 
+  toastMessage: string | null = null;
+  toastType: 'error' | 'success' = 'error';
+
+  private showToast(message: string, type: 'error' | 'success' = 'error') {
+    this.toastMessage = message;
+    this.toastType = type;
+    this.cdr.detectChanges();
+
+    // remove after 3 seconds
+    setTimeout(() => {
+      this.toastMessage = null;
+      this.cdr.detectChanges();
+    }, 3500);
+  }
 
   // --- ACTIONS ---
   async analyzeUrl() {
@@ -51,7 +63,7 @@ export class NewJobOfferComponent {
 
     } catch (err) {
       console.error('Fehler bei URL Analyse:', err);
-      alert('Die KI konnte die URL nicht analysieren. Versuche den Text manuell zu kopieren.');
+      this.showToast('Die KI konnte die URL nicht lesen. Kopiere bitte den Text manuell.', 'error');
     } finally {
       this.stopLoading();
     }
@@ -74,7 +86,7 @@ export class NewJobOfferComponent {
 
     } catch (err) {
       console.error('Fehler bei Text Analyse:', err);
-      alert('Fehler bei der Analyse. Bitte versuche es erneut.');
+      this.showToast('Fehler bei der Analyse. Versuche es erneut.', 'error');
     } finally {
       this.stopLoading();
     }
@@ -84,7 +96,7 @@ export class NewJobOfferComponent {
     const analysis = this.analysisResult$.value;
     if (!analysis) return;
 
-    this.startLoading(); // Auch beim Speichern kurz Spinner zeigen
+    this.startLoading();
 
     try {
       const code = this.getUserCodeOrRedirect();
@@ -92,8 +104,8 @@ export class NewJobOfferComponent {
 
       await this.jobService.saveAnalysis(code, analysis);
 
-      // Erfolg! Zurück zum Dashboard
-      this.router.navigate(['/']);
+      this.showToast('Job erfolgreich gespeichert!', 'success');
+      setTimeout(() => this.router.navigate([ '/' ]), 2000);
 
     } catch (err) {
       console.error('Fehler beim Speichern:', err);
@@ -111,14 +123,14 @@ export class NewJobOfferComponent {
   }
 
   goToDashboard() {
-    this.router.navigate(['/']);
+    this.router.navigate([ '/' ]);
   }
 
   // --- HELPER ---
 
   private startLoading() {
     this.isLoading = true;
-    this.cdr.detectChanges(); // UI Update erzwingen
+    this.cdr.detectChanges();
   }
 
   private stopLoading() {
@@ -130,7 +142,7 @@ export class NewJobOfferComponent {
     const code = this.session.getUserCode();
     if (!code) {
       alert('Session abgelaufen. Bitte neu anmelden.');
-      this.router.navigate(['/register']);
+      this.router.navigate([ '/login' ]);
       return null;
     }
     return code;
