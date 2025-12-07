@@ -1,6 +1,7 @@
 package com.m1well.mh3.backend.service
 
 import com.m1well.mh3.backend.db.JobRepo
+import com.m1well.mh3.backend.db.TimelineEntity
 import com.m1well.mh3.backend.dto.JobSaveRequestDto
 import com.m1well.mh3.backend.dto.JobUpdateRequestDto
 import com.m1well.mh3.backend.dto.JobViewResponseDto
@@ -10,6 +11,7 @@ import com.m1well.mh3.backend.mapping.Mapper
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 private val logger = KotlinLogging.logger {}
 
@@ -32,7 +34,7 @@ class JobService(private val repo: JobRepo, private val userService: UserService
     @Transactional
     fun updateJob(userCode: String, dto: JobUpdateRequestDto): JobViewResponseDto {
         val userExist = userService.getUserForCode(userCode)
-        val job = repo.findByUniqueKey(dto.uniqueKey)?.let { Mapper.toUpdateEntity(dto, it) }
+        val job = repo.findByUniqueKey(dto.uniqueKey)
             ?: throw JobNotFoundException("Job with unique key ${dto.uniqueKey} not found!")
                 .also { logger.error { "Job with unique key ${dto.uniqueKey} not found!" } }
 
@@ -41,7 +43,15 @@ class JobService(private val repo: JobRepo, private val userService: UserService
                 .also { logger.error { "You are not allowed to change this job!" } }
         }
 
-        val updated = job.let { repo.save(it) }
+        if (job.status != dto.status) {
+            job.timeline?.add(
+                TimelineEntity(
+                    status = dto.status,
+                    changedAt = LocalDateTime.now(),
+                )
+            )
+        }
+        val updated = Mapper.toUpdateEntity(dto, job).let { repo.save(it) }
         return Mapper.toDto(updated)
     }
 

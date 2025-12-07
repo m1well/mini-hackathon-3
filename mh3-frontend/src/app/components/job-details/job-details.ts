@@ -1,21 +1,22 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, model, signal } from '@angular/core';
 import { JobOffer } from '@/shared/model';
 import { UserSessionService } from '@/core/services/user-session.service';
 import { JobOfferService } from '@/core/services/joboffer.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgClass } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-job-details',
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    NgClass
+    NgClass,
+    DatePipe
   ],
   templateUrl: './job-details.html',
 })
 export class JobDetails {
-  offer = input.required<JobOffer>();
+  offer = model.required<JobOffer>();
 
   private session = inject(UserSessionService);
   private jobOfferService = inject(JobOfferService);
@@ -31,8 +32,8 @@ export class JobDetails {
     this.isSavedSuccess.set(false);
 
     try {
-      await this.jobOfferService.updateOffer(code, this.offer());
-
+      const updatedOffer = await this.jobOfferService.updateOffer(code, this.offer());
+      this.offer.set(updatedOffer);
       this.isSavedSuccess.set(true);
 
       setTimeout(() => {

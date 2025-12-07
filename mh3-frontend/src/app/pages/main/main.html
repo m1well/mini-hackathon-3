@@ -72,7 +72,7 @@
 
           <!-- Expanded details -->
           @if (selectedOffer === offer) {
-            <app-job-details [offer]="offer" />
+            <app-job-details [(offer)]="offer!!" />
           }
         </div>
       } @empty {

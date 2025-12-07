@@ -49,10 +49,21 @@ class JobEntity(
     var urlLinkedin: String?,
     var comment: String?,
 
-    @ElementCollection @CollectionTable(
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
         name = "job_techstack",
         joinColumns = [JoinColumn(name = "job_id")]
-    ) @Column(name = "value") @OrderBy("value ASC")
-    val techstack: MutableList<String>?
+    )
+    @Column(name = "value")
+    @OrderBy("value ASC")
+    val techstack: MutableList<String>?,
 
-)
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+        name = "job_timeline",
+        joinColumns = [JoinColumn(name = "job_id")]
+    )
+    @OrderBy("changedAt DESC")
+    val timeline: MutableList<TimelineEntity>?,
+
+    )

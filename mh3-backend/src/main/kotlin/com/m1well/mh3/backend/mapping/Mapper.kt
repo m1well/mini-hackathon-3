@@ -1,8 +1,10 @@
 package com.m1well.mh3.backend.mapping
 
 import com.m1well.mh3.backend.db.JobEntity
+import com.m1well.mh3.backend.db.TimelineEntity
 import com.m1well.mh3.backend.db.UserEntity
 import com.m1well.mh3.backend.dto.*
+import java.time.LocalDateTime
 
 class Mapper {
 
@@ -42,6 +44,7 @@ class Mapper {
             urlKununu = null,
             urlLinkedin = null,
             comment = null,
+            timeline = mutableListOf(TimelineEntity("Neu", LocalDateTime.now()))
         )
 
         fun toUpdateEntity(dto: UserUpdateRequestDto, existing: UserEntity): UserEntity {
@@ -94,7 +97,13 @@ class Mapper {
             urlCompanyLogo = entity.urlCompanyLogo,
             urlKununu = entity.urlKununu,
             urlLinkedin = entity.urlLinkedin,
-            comment = entity.comment
+            comment = entity.comment,
+            timeline = entity.timeline?.map { toDto(it) }?.sortedBy { it.changedAt }?.reversed()?.toMutableList()
+        )
+
+        fun toDto(entity: TimelineEntity) = JobViewTimelineResponseDto(
+            status = entity.status,
+            changedAt = entity.changedAt,
         )
     }
 

@@ -16,7 +16,7 @@ export class JobOfferService {
     }));
   }
 
-  async updateOffer(userCode: string, job: JobOffer) {
+  async updateOffer(userCode: string, job: JobOffer): Promise<JobOffer> {
     const payload = {
       uniqueKey: job.uniqueKey,
       status: job.status,
@@ -35,6 +35,8 @@ export class JobOfferService {
     });
 
     if (!res.ok) throw new Error('Backend Fehler beim Update des Jobs');
+
+    return res.json()
   }
 
 }

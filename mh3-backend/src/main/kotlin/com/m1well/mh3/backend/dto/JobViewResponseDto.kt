@@ -1,5 +1,7 @@
 package com.m1well.mh3.backend.dto
 
+import java.time.LocalDateTime
+
 data class JobViewResponseDto(
     val uniqueKey: String,
     val title: String,
@@ -23,4 +25,10 @@ data class JobViewResponseDto(
     val urlKununu: String?,
     val urlLinkedin: String?,
     val comment: String?,
+    val timeline: MutableList<JobViewTimelineResponseDto>?,
+)
+
+data class JobViewTimelineResponseDto(
+    val status: String,
+    val changedAt: LocalDateTime
 )

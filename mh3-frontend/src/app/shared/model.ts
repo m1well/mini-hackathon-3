@@ -35,6 +35,12 @@ export type JobOffer = {
   urlLinkedin?: string;
   status: string;
   comment: string;
+  timeline?: Timeline[];
+}
+
+export type Timeline = {
+  status: string,
+  changedAt: Date,
 }
 
 export type JobAnalysis = {
