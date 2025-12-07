@@ -200,14 +200,13 @@
       </div>
 
       @if (offer().timeline && offer().timeline!!.length > 0) {
+        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
+          Bewerbungsverlauf
+        </h3>
         <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700/50">
-          <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">
-            Bewerbungsverlauf
-          </h3>
-
           <div class="relative border-l-2 border-slate-700 ml-2 space-y-6 py-1">
             @for (entry of offer().timeline; track entry) {
-              <div class="ml-6 mb-3 relative">
+              <div class="ml-5.5 mb-3 relative">
                 <span
                   class="absolute -left-[31px] top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-slate-900 ring-2 ring-slate-800">
                   <span class="h-2 w-2 rounded-full"
