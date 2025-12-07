@@ -1,5 +1,6 @@
 package com.m1well.mh3.backend.service
 
+import com.m1well.mh3.backend.db.JobEntity
 import com.m1well.mh3.backend.db.JobRepo
 import com.m1well.mh3.backend.db.TimelineEntity
 import com.m1well.mh3.backend.dto.JobSaveRequestDto
@@ -21,7 +22,10 @@ class JobService(private val repo: JobRepo, private val userService: UserService
     fun getAllJobsForUser(userCode: String): List<JobViewResponseDto> {
         val userExist = userService.getUserForCode(userCode)
         return repo.findAllByUserCode(userCode)
-            .sortedBy { it.created } // TODO better sorting (status, date, ...)
+            .sortedWith(
+                compareBy<JobEntity> { getStatusRank(it.status) }
+                    .thenByDescending { it.created }
+            )
             .map { Mapper.toDto(it) }
     }
 
@@ -53,6 +57,17 @@ class JobService(private val repo: JobRepo, private val userService: UserService
         }
         val updated = Mapper.toUpdateEntity(dto, job).let { repo.save(it) }
         return Mapper.toDto(updated)
+    }
+
+    private fun getStatusRank(status: String): Int {
+        return when (status) {
+            "Zusage" -> 1
+            "Beworben" -> 2
+            "Warten" -> 3
+            "Neu" -> 4
+            "Absage" -> 99
+            else -> 5 // all others on top of "Absage"
+        }
     }
 
 }
