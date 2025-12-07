@@ -1,7 +1,10 @@
 package com.m1well.mh3.backend.service
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Service
+
+private val logger = KotlinLogging.logger {}
 
 @Service
 class WebScraper {
@@ -16,6 +19,7 @@ class WebScraper {
             // get html body
             doc.body().text()
         } catch (e: Exception) {
+            logger.error { e.message }
             throw IllegalArgumentException("Konnte URL nicht lesen: ${e.message}", e)
         }
     }

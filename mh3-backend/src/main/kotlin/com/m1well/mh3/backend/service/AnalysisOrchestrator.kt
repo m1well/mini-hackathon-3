@@ -19,12 +19,12 @@ class AnalysisOrchestrator(
 
     fun startAnalysis(userCode: String, dto: JobAnalyzeRequestDto): AnalysisResultDto? {
         val userFromDb = userService.getUserForCode(userCode)
-
         var textToAnalyze: String
 
-        val analyzedViaUrl = isAnalyzeModeUrl(dto)
+        logger.info { "Url is: ${dto.url}" }
 
-        if (analyzedViaUrl) {
+        val analyzeViaUrl = isAnalyzeModeUrl(dto)
+        if (analyzeViaUrl) {
             try {
                 // webscraping with given url
                 val rawText = webScraper.fetchTextFromUrl(dto.url!!)
@@ -42,9 +42,9 @@ class AnalysisOrchestrator(
 
         if (openaiApikey.isBlank() || openaiApikey.equals("dummy")) {
             logger.info { "Mock result because openai apikey not available...." }
-            return createMockResult(analyzedViaUrl, dto.url)
+            return createMockResult(analyzeViaUrl, dto.url)
         } else {
-            return openAiService.fireAiRequest(textToAnalyze, analyzedViaUrl, dto.url, userFromDb)
+            return openAiService.fireAiRequest(textToAnalyze, analyzeViaUrl, dto.url, userFromDb)
         }
     }
 
