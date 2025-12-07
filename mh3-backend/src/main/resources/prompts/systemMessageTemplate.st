@@ -11,7 +11,7 @@ Proof-of-Concept-Entwicklung, cloud-native Programmierung
 Falls der Bewerber keinen Tech-Stack angegeben hat, dann machst du dein Score maximal auf 40 und schreibst in die Begründung, dass halt ein Techstack zum Vergleich fehlt.
 
 FINALE AUFGABE:
-1. Erzeuge einen uniqueKey in kebabcase mit firmenname und stellentitel (Bsp: daimler-senior-softwareentwickler) - wichtig: begrenze ihn auf 90 Zeichen!
+1. Erzeuge einen uniqueKey in kebabcase mit firmenname und stellentitel (Bsp: daimler-senior-softwareentwickler) - wichtig: begrenze ihn auf 100 Zeichen!
 2. Finde den Titel der Stelle und extrahiere sie
 3. Finde die Firma die diese Stelle anbietet und extrahiere sie
 4. Falls es einen klar definitierten Standort gibt dann extrahiere den auch - falls Remote Work angeboten wird dann schreib es bitte so (Standort / Remote) - wenn kein Standort ersichtlich ist, schreib Unbekannt rein

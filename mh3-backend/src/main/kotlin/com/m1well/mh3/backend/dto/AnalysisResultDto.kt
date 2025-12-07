@@ -7,7 +7,7 @@ data class AnalysisResultDto(
     var analyzedViaUrl: Boolean,
     val location: String,
     val summary: String,
-    val techstack: List<String>,
+    var techstack: MutableList<String>?,
     val tasks: String,
     val workingModel: String,
     val experience: String,

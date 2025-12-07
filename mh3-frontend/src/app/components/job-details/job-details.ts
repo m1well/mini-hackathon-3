@@ -50,11 +50,12 @@ export class JobDetails {
 
   isEditingSocial = signal(false);
 
-startEditSocial() {
-  this.isEditingSocial.set(true);
-}
+  startEditLinks() {
+    this.isEditingSocial.set(true);
+  }
 
-finishEditSocial() {
-  this.isEditingSocial.set(false);
-}
+  finishEditLinks() {
+    this.isEditingSocial.set(false);
+  }
+
 }

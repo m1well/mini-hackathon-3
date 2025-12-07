@@ -12,7 +12,7 @@ export const routes: Routes = [
   { path: '', pathMatch: 'full', component: Main, canActivate: [ authGuard ] },
   { path: 'login', component: Login },
   { path: 'registration', component: Registration },
-  { path: 'newjo', component: NewJobOfferComponent, canActivate: [ authGuard ] },
+  { path: 'job', component: NewJobOfferComponent, canActivate: [ authGuard ] },
   { path: 'imprint', component: Imprint },
   { path: 'privacy', component: Privacy },
   { path: 'profile', component: Profile, canActivate: [ authGuard ] },

@@ -39,114 +39,8 @@
           </div>
         </div>
       </div>
-    
-
-    <!-- SOCIAL MEDIA -->
-<div class="mt-6">
-  <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
-    Social Media
-  </h3>
-
-  <!-- Wenn NICHT im Bearbeitungsmodus -->
-  @if (!isEditingSocial()) {
-
-    <!-- Wenn KEINE URLs hinterlegt -->
-    @if (!offer().urlKununu && !offer().urlLinkedin && !offer().urlCompany) {
-      <p class="text-slate-500 text-sm mb-3">Keine Links gespeichert.</p>
-
-      <button
-        class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold"
-        (click)="startEditSocial()">
-        ➕ Links hinzufügen
-      </button>
-    }
-
-    <!-- Wenn URLs existieren → Buttons anzeigen -->
-    @if (offer().urlKununu || offer().urlLinkedin || offer().urlCompany) {
-      <div class="flex flex-wrap gap-3 mb-3">
-        @if (offer().urlCompany) {
-          <a
-            [href]="offer().urlCompany"
-            target="_blank"
-            class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-indigo-400 border border-slate-600 rounded text-xl">
-            Firmenwebsite
-          </a>
-        }
-
-        @if (offer().urlKununu) {
-          <a
-            [href]="offer().urlKununu"
-            target="_blank"
-            class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-yellow-400 border border-slate-600 rounded text-xl">
-            Kununu
-          </a>
-        }
-
-        @if (offer().urlLinkedin) {
-          <a
-            [href]="offer().urlLinkedin"
-            target="_blank"
-            class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-sky-400 border border-slate-600 rounded text-xl">
-            LinkedIn
-          </a>
-        }
-
-        
-        <button
-        class="px-4 py-2 hover:bg-slate-600 text-white rounded font-bold"
-        (click)="startEditSocial()">
-        ✏️ 
-      </button>
-      </div>
-
-      
-    }
-
-  }
-
-  <!-- BEARBEITUNGSMODUS -->
-  @if (isEditingSocial()) {
-
-    <div class="space-y-3 mt-2">
-
-      <div>
-        <label class="text-xs text-slate-400">Kununu URL</label>
-        <input
-          class="w-full p-2 bg-slate-950 text-white rounded border border-slate-700"
-          [(ngModel)]="offer().urlKununu"
-          placeholder="https://www.kununu.com/...">
-      </div>
-
-      <div>
-        <label class="text-xs text-slate-400">LinkedIn URL</label>
-        <input
-          class="w-full p-2 bg-slate-950 text-white rounded border border-slate-700"
-          [(ngModel)]="offer().urlLinkedin"
-          placeholder="https://www.linkedin.com/...">
-      </div>
-
-      <div>
-        <label class="text-xs text-slate-400">Unternehmenswebsite</label>
-        <input
-          class="w-full p-2 bg-slate-950 text-white rounded border border-slate-700"
-          [(ngModel)]="offer().urlCompany"
-          placeholder="https://www.company.com/...">
-      </div>
-
-      <div class="flex gap-3 pt-3">
-        
-
-        <button
-          class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded font-bold"
-          (click)="finishEditSocial()">
-          Bearbeiten schließen
-        </button>
-      </div>
 
     </div>
-  }
-
-</div></div>
 
 
     <div class="space-y-6">
@@ -198,6 +92,110 @@
           rows="5"
           [(ngModel)]="offer().comment"
           placeholder="Notizen zum Bewerbungsgespräch..."></textarea>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
+          Relevante Links
+        </h3>
+
+        <!-- Wenn NICHT im Bearbeitungsmodus -->
+        @if (!isEditingSocial()) {
+
+          <!-- Wenn KEINE URLs hinterlegt -->
+          @if (!offer().urlKununu && !offer().urlLinkedin && !offer().urlCompany) {
+            <p class="text-slate-500 text-sm mb-3">Keine Links gespeichert.</p>
+
+            <button
+              class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold"
+              (click)="startEditLinks()">
+              ➕ Links hinzufügen
+            </button>
+          }
+
+          <!-- Wenn URLs existieren → Buttons anzeigen -->
+          @if (offer().urlKununu || offer().urlLinkedin || offer().urlCompany) {
+            <div class="flex flex-wrap gap-3 mb-3">
+              @if (offer().urlCompany) {
+                <a
+                  [href]="offer().urlCompany"
+                  target="_blank"
+                  class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-indigo-400 border border-slate-600 rounded text-xl">
+                  Firmenwebsite
+                </a>
+              }
+
+              @if (offer().urlKununu) {
+                <a
+                  [href]="offer().urlKununu"
+                  target="_blank"
+                  class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-yellow-400 border border-slate-600 rounded text-xl">
+                  Kununu
+                </a>
+              }
+
+              @if (offer().urlLinkedin) {
+                <a
+                  [href]="offer().urlLinkedin"
+                  target="_blank"
+                  class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-sky-400 border border-slate-600 rounded text-xl">
+                  LinkedIn
+                </a>
+              }
+
+
+              <button
+                class="px-4 py-2 hover:bg-slate-600 text-white rounded font-bold"
+                (click)="startEditLinks()">
+                ✏️
+              </button>
+            </div>
+          }
+
+        }
+
+        <!-- BEARBEITUNGSMODUS -->
+        @if (isEditingSocial()) {
+
+          <div class="space-y-3 mt-2">
+
+            <div>
+              <label class="text-xs text-slate-400">Unternehmenswebsite</label>
+              <input
+                class="w-full p-2 bg-slate-950 text-white rounded border border-slate-700"
+                [(ngModel)]="offer().urlCompany"
+                placeholder="https://www.company.com/...">
+            </div>
+
+            <div>
+              <label class="text-xs text-slate-400">Kununu URL</label>
+              <input
+                class="w-full p-2 bg-slate-950 text-white rounded border border-slate-700"
+                [(ngModel)]="offer().urlKununu"
+                placeholder="https://www.kununu.com/...">
+            </div>
+
+            <div>
+              <label class="text-xs text-slate-400">LinkedIn URL</label>
+              <input
+                class="w-full p-2 bg-slate-950 text-white rounded border border-slate-700"
+                [(ngModel)]="offer().urlLinkedin"
+                placeholder="https://www.linkedin.com/...">
+            </div>
+
+            <div class="flex gap-3 pt-3">
+
+
+              <button
+                class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded font-bold"
+                (click)="finishEditLinks()">
+                Bearbeiten schließen
+              </button>
+            </div>
+
+          </div>
+        }
+
       </div>
 
       <div class="flex justify-end pt-2">

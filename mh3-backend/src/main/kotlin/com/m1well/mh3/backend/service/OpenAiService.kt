@@ -10,6 +10,7 @@ import org.springframework.ai.chat.prompt.SystemPromptTemplate
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
+import kotlin.collections.sortedBy
 
 private val logger = KotlinLogging.logger {}
 
@@ -45,6 +46,7 @@ class OpenAiService(val chatClientBuilder: ChatClient.Builder) {
 
         result?.analyzedViaUrl = analyzedViaUrl
         result?.urlJob = url
+        result?.techstack = result.techstack?.sortedBy { it.lowercase() }?.toMutableList()
         return result
     }
 

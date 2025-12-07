@@ -29,16 +29,16 @@
                 <constraints primaryKey="true" nullable="false" primaryKeyName="job_pk"/>
             </column>
             <column name="created" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="unique_key" type="VARCHAR(90)">
+            <column name="unique_key" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
             <column name="user_code" type="VARCHAR(9)">
                 <constraints nullable="false"/>
             </column>
-            <column name="title" type="VARCHAR(130)">
+            <column name="title" type="VARCHAR(160)">
                 <constraints nullable="false"/>
             </column>
-            <column name="company" type="VARCHAR(70)">
+            <column name="company" type="VARCHAR(90)">
                 <constraints nullable="false"/>
             </column>
             <column name="analyzed_via_url" type="TINYINT">
@@ -57,11 +57,11 @@
             <column name="salary_range" type="VARCHAR(130)"/>
             <column name="match_score" type="TINYINT"/>
             <column name="match_reasoning" type="VARCHAR(800)"/>
-            <column name="url_job" type="VARCHAR(200)"/>
-            <column name="url_company" type="VARCHAR(100)"/>
+            <column name="url_job" type="VARCHAR(300)"/>
+            <column name="url_company" type="VARCHAR(130)"/>
             <column name="url_company_logo" type="VARCHAR(400)"/>
-            <column name="url_kununu" type="VARCHAR(100)"/>
-            <column name="url_linkedin" type="VARCHAR(100)"/>
+            <column name="url_kununu" type="VARCHAR(130)"/>
+            <column name="url_linkedin" type="VARCHAR(130)"/>
             <column name="comment" type="VARCHAR(400)"/>
         </createTable>
     </changeSet>

@@ -62,7 +62,7 @@ class AnalysisOrchestrator(
                 clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, 
                 consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labor
             """.trimIndent(),
-            techstack = listOf("Kotlin", "Spring Boot", "Angular", "Docker", "Git"),
+            techstack = mutableListOf("Kotlin", "Spring Boot", "Angular", "Docker", "Git"),
             tasks = "",
             workingModel = "",
             experience = "",
