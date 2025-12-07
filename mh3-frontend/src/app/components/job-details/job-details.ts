@@ -46,4 +46,15 @@ export class JobDetails {
       this.isSaving.set(false);
     }
   }
+
+
+  isEditingSocial = signal(false);
+
+startEditSocial() {
+  this.isEditingSocial.set(true);
+}
+
+finishEditSocial() {
+  this.isEditingSocial.set(false);
+}
 }
