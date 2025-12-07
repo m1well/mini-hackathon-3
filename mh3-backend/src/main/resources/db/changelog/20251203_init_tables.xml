@@ -49,14 +49,14 @@
             </column>
             <column name="location" type="VARCHAR(90)"/>
             <column name="summary" type="VARCHAR(900)"/>
-            <column name="tasks" type="VARCHAR(500)"/>
-            <column name="working_model" type="VARCHAR(500)"/>
-            <column name="experience" type="VARCHAR(500)"/>
-            <column name="benefits" type="VARCHAR(500)"/>
-            <column name="culture" type="VARCHAR(500)"/>
+            <column name="tasks" type="VARCHAR(400)"/>
+            <column name="working_model" type="VARCHAR(400)"/>
+            <column name="experience" type="VARCHAR(400)"/>
+            <column name="benefits" type="VARCHAR(400)"/>
+            <column name="culture" type="VARCHAR(400)"/>
             <column name="salary_range" type="VARCHAR(130)"/>
             <column name="match_score" type="TINYINT"/>
-            <column name="match_reasoning" type="VARCHAR(800)"/>
+            <column name="match_reasoning" type="VARCHAR(700)"/>
             <column name="url_job" type="VARCHAR(300)"/>
             <column name="url_company" type="VARCHAR(130)"/>
             <column name="url_company_logo" type="VARCHAR(400)"/>
@@ -71,7 +71,7 @@
             <column name="user_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="fk_techstack_user" references="user(id)"/>
             </column>
-            <column name="value" type="VARCHAR(40)">
+            <column name="value" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="created" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
@@ -88,7 +88,7 @@
             <column name="job_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="fk_techstack_job" references="job(id)"/>
             </column>
-            <column name="value" type="VARCHAR(40)">
+            <column name="value" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="created" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
