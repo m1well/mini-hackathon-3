@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "backend:start": "echo \"starting backend...\" && cd mh3-backend && chmod +x mvnw && ./mvnw spring-boot:run",
-    "backend:build": "echo \"building backend...\" && cd mh3-backend && chmod +x mvnw && ./mvnw clean package",
+    "backend:start": "echo \"starting backend...\" && cd mh3-backend && sh mvnw spring-boot:run",
+    "backend:build": "echo \"building backend...\" && cd mh3-backend && sh mvnw clean package",
     "frontend:start": "echo \"starting frontend...\" && cd mh3-frontend && npm start",
     "frontend:build-dev": "echo \"building frontend...\" && cd mh3-frontend && rm -rf dist && npm run build:dev",
     "frontend:build-prod": "echo \"building frontend...\" && cd mh3-frontend && rm -rf dist && npm run build:prod",

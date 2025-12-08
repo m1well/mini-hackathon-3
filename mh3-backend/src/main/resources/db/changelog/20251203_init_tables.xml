@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="20251203-01" author="m1well">
+        <createTable tableName="user">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="user_pk"/>
+            </column>
+            <column name="created" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="unique_code" type="VARCHAR(9)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="current_job_title" type="VARCHAR(50)"/>
+            <column name="experience_years" type="TINYINT"/>
+            <column name="preferences" type="VARCHAR(160)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20251203-02" author="m1well">
+        <createTable tableName="job">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="job_pk"/>
+            </column>
+            <column name="created" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="unique_key" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_code" type="VARCHAR(9)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(160)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company" type="VARCHAR(90)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="analyzed_via_url" type="TINYINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location" type="VARCHAR(90)"/>
+            <column name="summary" type="VARCHAR(900)"/>
+            <column name="tasks" type="VARCHAR(400)"/>
+            <column name="working_model" type="VARCHAR(400)"/>
+            <column name="experience" type="VARCHAR(400)"/>
+            <column name="benefits" type="VARCHAR(400)"/>
+            <column name="culture" type="VARCHAR(400)"/>
+            <column name="salary_range" type="VARCHAR(130)"/>
+            <column name="match_score" type="TINYINT"/>
+            <column name="match_reasoning" type="VARCHAR(700)"/>
+            <column name="url_job" type="VARCHAR(300)"/>
+            <column name="url_company" type="VARCHAR(130)"/>
+            <column name="url_company_logo" type="VARCHAR(400)"/>
+            <column name="url_kununu" type="VARCHAR(130)"/>
+            <column name="url_linkedin" type="VARCHAR(130)"/>
+            <column name="comment" type="VARCHAR(400)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20251203-03" author="m1well">
+        <createTable tableName="user_techstack">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_techstack_user" references="user(id)"/>
+            </column>
+            <column name="value" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="user_techstack"
+                                 constraintName="user_techstack_to_user_fk"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"/>
+    </changeSet>
+
+    <changeSet id="20251203-04" author="m1well">
+        <createTable tableName="job_techstack">
+            <column name="job_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_techstack_job" references="job(id)"/>
+            </column>
+            <column name="value" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20251203-05" author="m1well">
+        <createTable tableName="job_timeline">
+            <column name="job_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_timeline_job" references="job(id)"/>
+            </column>
+            <column name="status" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

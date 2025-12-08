@@ -10,6 +10,15 @@ spring:
     url: jdbc:mariadb://localhost:3306/hackathon-db
     username: dbadmin
     password: password
+  liquibase:
+    change-log: classpath:db/master.xml
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:dummy}
+      chat:
+        options:
+          model: gpt-5-mini
+          temperature: 1
 
 app:
   cors:

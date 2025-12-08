@@ -7,7 +7,6 @@ import {RouterOutlet} from '@angular/router';
     RouterOutlet
   ],
   templateUrl: './content.html',
-  styleUrl: './content.css',
 })
 export class Content {
 

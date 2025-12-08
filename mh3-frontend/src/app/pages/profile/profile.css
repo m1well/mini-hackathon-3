@@ -1,0 +1,32 @@
+#skillInput{
+    background-color: lightgray;
+    border-radius: 4px;
+    height: 35px;
+    width: 400px;
+    padding-inline: 10px;
+}
+
+.profilHead{
+    width: 100vw;
+    padding-inline: 30px;
+    gap: 30px;
+    display: flex;
+    position: fixed;
+    top: 65px;
+    left: 0;
+}
+
+.delete{
+    width: 35px;
+}
+
+.skillText{
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+   width: 300px;
+}
+
+.skillRow{
+    width: 600px;
+}

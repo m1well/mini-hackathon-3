@@ -1,0 +1,266 @@
+<div class="container mx-auto px-4 py-8 max-w-4xl relative min-h-[80vh]">
+
+  <!-- Back Button -->
+  <button (click)="goToDashboard()"
+          class="flex items-center gap-2 text-slate-400 hover:text-white transition group mb-8">
+    <span class="group-hover:-translate-x-1 transition-transform">←</span>
+    Zurück zum Dashboard
+  </button>
+
+  @if (!analysisResult$.getValue()) {
+
+    <div class="text-center mb-10">
+      <h1 class="text-3xl font-bold text-white mb-2">Neuen Job analysieren</h1>
+      <p class="text-slate-400">Füttere die KI mit einer URL oder Text und erhalte sofort Struktur.</p>
+      <p class="mt-3 text-sm text-slate-400">Achtung: Zum Beispiel Stepstone scheint das Webscraping über einen Server
+        irgendwie zu verhindern - wenn das nicht klappt musst du den Text manuell kopieren.
+        Das hat aber meistens einen Vorteil: Beim Webscraping wird z.b. das Gehalt 'blockiert' - obwohl es ja
+        offensichtlich auf der Seite steht.
+        Wenn du es aber manuell kopierst, kopierst du das Gehalt automatisch mit.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start relative">
+
+      <div
+        class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2 z-10">
+        <div class="h-12 w-px bg-slate-700"></div>
+        <span
+          class="bg-slate-900 text-slate-500 text-xs font-bold px-2 py-1 rounded border border-slate-700">ODER</span>
+        <div class="h-12 w-px bg-slate-700"></div>
+      </div>
+
+      <!-- Option A: URL -->
+      <section
+        class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-xl hover:border-blue-500/50 transition duration-300 h-full flex flex-col">
+        <div class="mb-4">
+          <div class="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center mb-4 text-2xl">🌐</div>
+          <h2 class="text-xl text-white font-bold">Via URL</h2>
+          <p class="text-sm text-slate-400">Kopiere den Link zur Stellenanzeige (Stepstone, LinkedIn, etc.)</p>
+        </div>
+
+        <div class="flex-1 space-y-4">
+          <input type="text"
+                 placeholder="https://..."
+                 [formControl]="jobUrlControl"
+                 class="w-full p-3 rounded-lg bg-slate-900 border border-slate-600 text-white placeholder-slate-600 focus:border-blue-500 outline-none transition"/>
+
+          <button
+            class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 disabled:text-slate-500 text-white font-bold py-3 rounded-lg transition shadow-lg shadow-blue-900/20"
+            [disabled]="jobUrlControl.invalid"
+            (click)="analyzeUrl()">
+            Link analysieren 🚀
+          </button>
+        </div>
+      </section>
+
+      <!-- Option B: Text -->
+      <section
+        class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-xl hover:border-emerald-500/50 transition duration-300 h-full flex flex-col">
+        <div class="mb-4">
+          <div class="w-12 h-12 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4 text-2xl">📝</div>
+          <h2 class="text-xl text-white font-bold">Via Text</h2>
+          <p class="text-sm text-slate-400">Kein Link? Kopiere einfach den ganzen Text hier rein.</p>
+        </div>
+
+        <div class="flex-1 space-y-4">
+          <textarea
+            placeholder="Hier einfügen..."
+            [formControl]="jobTextControl"
+            class="w-full p-3 rounded-lg bg-slate-900 border border-slate-600 text-white placeholder-slate-600 focus:border-emerald-500 outline-none resize-none h-32 transition"></textarea>
+
+          <button
+            class="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-700 disabled:text-slate-500 text-white font-bold py-3 rounded-lg transition shadow-lg shadow-emerald-900/20"
+            [disabled]="jobTextControl.invalid"
+            (click)="analyzeText()">
+            Text analysieren ✨
+          </button>
+        </div>
+      </section>
+
+    </div>
+
+  } @else {
+    <!-- RESULT VIEW -->
+    @let analysis = analysisResult$.getValue()!!;
+
+    <div class="animate-fade-in-up">
+      <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-2xl overflow-hidden">
+
+        <!-- Header -->
+        <div
+          class="bg-gradient-to-r from-slate-800 to-slate-900 p-8 border-b border-slate-700 flex flex-col md:flex-row justify-between items-start gap-4">
+          <div>
+            <h2 class="text-3xl font-bold text-white mb-2">{{ analysis.title }}</h2>
+            <div class="text-emerald-400 text-lg font-medium">{{ analysis.company }}</div>
+          </div>
+
+          <!-- Match Score -->
+          <div
+            class="flex flex-col items-center bg-slate-800 p-3 rounded-lg border border-slate-600 shadow-lg min-w-[100px]">
+            <span class="text-xs font-bold text-slate-400 uppercase">Match</span>
+            <span class="text-3xl font-bold"
+                  [ngClass]="analysis.matchScore >= 80 ? 'text-emerald-400' : 'text-amber-400'">
+              {{ analysis.matchScore }}%
+            </span>
+          </div>
+        </div>
+
+        <div class="p-8 grid grid-cols-1 xl:grid-cols-3 gap-8">
+
+          <!-- LINKE SPALTE (Hauptinfos) -->
+          <div class="xl:col-span-2 space-y-8">
+
+            <!-- Zusammenfassung -->
+            <div>
+              <h3 class="flex items-center gap-2 text-sm font-bold text-slate-500 uppercase mb-3">
+                <span>📄</span> Zusammenfassung
+              </h3>
+              <p class="text-slate-200 leading-relaxed bg-slate-900/30 p-4 rounded-lg border border-slate-700/30">
+                {{ analysis.summary }}
+              </p>
+            </div>
+
+            <!-- Tech Stack -->
+            <div>
+              <h3 class="flex items-center gap-2 text-sm font-bold text-slate-500 uppercase mb-3">
+                <span>💻</span> Tech Stack
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                @for (skill of analysis.techstack; track skill) {
+                  <span
+                    class="px-3 py-1 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded text-sm border border-slate-600 transition cursor-default">
+                    {{ skill }}
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- 🔥 DER AUFGESPLITTETE BEREICH 🔥 -->
+            <div>
+              <h3 class="flex items-center gap-2 text-sm font-bold text-slate-500 uppercase mb-3">
+                <span>🔍</span> Details & Anforderungen
+              </h3>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <div
+                  class="md:col-span-2 bg-slate-900/50 p-4 rounded-lg border border-slate-700/50 hover:border-slate-600 transition">
+                  <span class="block text-xs text-slate-400 font-bold uppercase mb-2">Aufgaben</span>
+                  <p class="text-sm text-slate-200 whitespace-pre-line leading-relaxed">{{ analysis.tasks }}</p>
+                </div>
+
+                <div
+                  class="bg-slate-900/50 p-4 rounded-lg border border-slate-700/50 hover:border-slate-600 transition">
+                  <span class="block text-xs text-slate-400 font-bold uppercase mb-2">Erfahrung</span>
+                  <p class="text-sm text-slate-200">{{ analysis.experience }}</p>
+                </div>
+
+                <div
+                  class="bg-slate-900/50 p-4 rounded-lg border border-slate-700/50 hover:border-slate-600 transition">
+                  <span class="block text-xs text-slate-400 font-bold uppercase mb-2">Arbeitsmodell</span>
+                  <p class="text-sm text-slate-200">{{ analysis.workingModel }}</p>
+                </div>
+
+                <div
+                  class="bg-slate-900/50 p-4 rounded-lg border border-slate-700/50 hover:border-slate-600 transition">
+                  <span class="block text-xs text-emerald-500/80 font-bold uppercase mb-2">Benefits</span>
+                  <p class="text-sm text-slate-200 leading-relaxed">{{ analysis.benefits }}</p>
+                </div>
+
+                <div
+                  class="bg-slate-900/50 p-4 rounded-lg border border-slate-700/50 hover:border-slate-600 transition">
+                  <span class="block text-xs text-indigo-400 font-bold uppercase mb-2">Kultur</span>
+                  <p class="text-sm text-slate-200">{{ analysis.culture }}</p>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RECHTE SPALTE (Sidebar: Salary, Match, Actions) -->
+          <div class="space-y-6">
+
+            <!-- Salary Box -->
+            <div class="bg-slate-900 p-5 rounded-lg border border-slate-700 text-center">
+              <span class="block text-xs text-slate-500 font-bold uppercase mb-1">Geschätztes Gehalt</span>
+              <span class="text-2xl font-mono text-white font-bold tracking-tight">{{ analysis.salaryRange }}</span>
+            </div>
+
+            <!-- Match Reasoning -->
+            <div class="bg-slate-700/30 p-5 rounded-lg border border-slate-700">
+              <h3 class="text-sm font-bold text-slate-500 uppercase mb-3">KI Bewertung</h3>
+              <p class="text-sm text-slate-300 italic leading-relaxed">"{{ analysis.matchReasoning }}"</p>
+            </div>
+
+            <!-- Actions (Sticky bottom on mobile if needed, here simple stack) -->
+            <div class="flex flex-col gap-3 pt-4 sticky top-4">
+              <button
+                class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-lg transition shadow-lg shadow-emerald-900/20 active:scale-95 transform duration-150"
+                (click)="saveAnalysis()">
+                Job speichern
+              </button>
+              <button
+                class="w-full bg-transparent hover:bg-rose-900/10 text-rose-400 hover:text-rose-300 font-medium py-3 rounded-lg transition border border-transparent hover:border-rose-900/30"
+                (click)="discardAnalysis()">
+                Verwerfen
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- 🔥🔥🔥 FULL SCREEN LOADING OVERLAY 🔥🔥🔥 -->
+@if (isLoading) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm transition-opacity duration-300">
+    <div
+      class="flex flex-col items-center bg-slate-800 p-8 rounded-2xl border border-slate-700 shadow-2xl max-w-sm text-center">
+
+      <!-- Cooler Spinner -->
+      <div class="relative w-20 h-20 mb-6">
+        <div class="absolute inset-0 border-4 border-slate-600 rounded-full"></div>
+        <div
+          class="absolute inset-0 border-4 border-t-emerald-500 border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+        <!-- Kleines Icon in der Mitte -->
+        <div class="absolute inset-0 flex items-center justify-center text-2xl animate-pulse">
+          🤖
+        </div>
+      </div>
+
+      <h3 class="text-xl font-bold text-white mb-2">KI analysiert...</h3>
+      <p class="text-slate-400 text-sm">
+        Der CareerStack Agent liest gerade die Stellenanzeige und matcht sie mit deinem Profil.
+      </p>
+      <p class="text-slate-500 text-xs mt-4 animate-pulse">Dies kann schon über 30 Sekunden dauern...</p>
+    </div>
+  </div>
+}
+
+@if (toastMessage) {
+  <div class="fixed bottom-5 right-5 z-[60] animate-fade-in-up max-w-sm w-full">
+    <div
+      class="flex items-center gap-3 p-4 rounded-lg shadow-2xl border"
+      [ngClass]="{
+	        'bg-rose-900/95 border-rose-700 text-rose-100': toastType === 'error',
+	        'bg-emerald-900/95 border-emerald-700 text-emerald-100': toastType === 'success'
+	      }">
+
+      <div class="text-2xl">
+        @if (toastType === 'error') {
+          ⚠️
+        } @else {
+          ✅
+        }
+      </div>
+      <div class="flex-1 text-sm font-medium">
+        {{ toastMessage }}
+      </div>
+      <button (click)="toastMessage = null" class="opacity-70 hover:opacity-100">✕</button>
+    </div>
+  </div>
+}

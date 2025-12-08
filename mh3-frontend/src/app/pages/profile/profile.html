@@ -1,0 +1,142 @@
+<div class="container mx-auto px-4 py-8 max-w-4xl space-y-6">
+
+  <!-- Breadcrumb / Back Navigation -->
+  <div>
+    <button (click)="goToDashboard()"
+            class="flex items-center gap-2 text-slate-400 hover:text-white transition group">
+      <span class="group-hover:-translate-x-1 transition-transform">←</span>
+      Zurück zum Dashboard
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    <section class="md:col-span-2 bg-slate-800 rounded-xl border border-slate-700 shadow-xl overflow-hidden relative">
+
+      <div class="h-24 bg-gradient-to-r from-blue-900 to-slate-800"></div>
+
+      <div class="px-8 pb-8">
+
+        <div class="flex justify-between items-end -mt-10 mb-6">
+          <div
+            class="w-20 h-20 rounded-full bg-slate-700 border-4 border-slate-800 flex items-center justify-center text-3xl font-bold text-emerald-400 shadow-lg">
+            {{ profile().firstName.charAt(0).toUpperCase() }}
+          </div>
+
+          @if (!editing()) {
+            <button (click)="editProfile()"
+                    class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-4 py-1.5 rounded-lg text-sm font-medium border border-slate-600 transition shadow-sm">
+              ✎ Profil bearbeiten
+            </button>
+          }
+        </div>
+
+        @if (!editing()) {
+          <!-- VIEW MODE -->
+          <div class="space-y-6 animate-fade-in">
+            <div>
+              <h1 class="text-3xl font-bold text-white">{{ profile().firstName }}</h1>
+              <p class="text-emerald-400 font-medium">{{ profile().currentJobTitle }}</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="bg-slate-900/50 p-3 rounded border border-slate-700/50">
+                <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Erfahrung</span>
+                <span class="text-white text-lg">{{ profile().experienceYears }} Jahre</span>
+              </div>
+
+              <div class="bg-slate-900/50 p-3 rounded border border-slate-700/50">
+                <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Präferenzen</span>
+                <span class="text-slate-300 text-sm leading-snug">{{ profile().preferences }}</span>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <!-- EDIT MODE -->
+          <div class="space-y-4 animate-fade-in">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-bold text-slate-500 uppercase">Vorname</label>
+                <input type="text" [(ngModel)]="profile().firstName"
+                       class="w-full p-2.5 rounded bg-slate-900 border border-slate-600 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition">
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-bold text-slate-500 uppercase">Jobtitel</label>
+                <input type="text" [(ngModel)]="profile().currentJobTitle"
+                       class="w-full p-2.5 rounded bg-slate-900 border border-slate-600 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition">
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-bold text-slate-500 uppercase">Erfahrung (Jahre)</label>
+              <input type="number" min="0" [(ngModel)]="profile().experienceYears"
+                     class="w-full p-2.5 rounded bg-slate-900 border border-slate-600 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition">
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-bold text-slate-500 uppercase">Präferenzen (Remote, Gehalt...)</label>
+              <textarea [(ngModel)]="profile().preferences" rows="2"
+                        class="w-full p-2.5 rounded bg-slate-900 border border-slate-600 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"></textarea>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+              <button (click)="saveProfile()"
+                      class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 rounded-lg transition shadow-lg shadow-emerald-900/20">
+                Speichern
+              </button>
+              <button (click)="cancelProfile()"
+                      class="px-4 py-2 rounded-lg border border-slate-600 text-slate-400 hover:text-white hover:bg-slate-700 transition">
+                Abbrechen
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="bg-slate-800 rounded-xl border border-slate-700 shadow-xl flex flex-col">
+      <div class="p-6 border-b border-slate-700">
+        <h2 class="text-lg font-bold text-white mb-1">Tech Stack</h2>
+        <p class="text-xs text-slate-400">Skills, die für das Matching genutzt werden.</p>
+      </div>
+
+      <div class="p-6 flex-1 flex flex-col gap-6">
+
+        <!-- Add Skill Input -->
+        <div class="flex gap-2">
+          <input type="text"
+                 placeholder="z.B. Kubernetes"
+                 [(ngModel)]="newSkillName"
+                 (keyup.enter)="addSkill()"
+                 class="flex-1 px-3 py-2 rounded bg-slate-900 border border-slate-600 text-white placeholder-slate-500 text-sm focus:border-blue-500 outline-none transition">
+          <button (click)="addSkill()"
+                  class="bg-blue-600 hover:bg-blue-700 text-white px-3 rounded transition font-bold text-lg leading-none pb-1">
+            +
+          </button>
+        </div>
+
+        <!-- Skills Cloud -->
+        <div class="flex flex-wrap gap-2 content-start">
+          @for (skill of profile().techstack; track skill; let i = $index) {
+            <span
+              class="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-slate-700 text-slate-200 border border-slate-600 hover:border-slate-500 transition cursor-default">
+              {{ skill }}
+              <button (click)="deleteSkill(i)"
+                      class="text-slate-400 hover:text-rose-400 hover:bg-slate-600 rounded-full w-4 h-4 flex items-center justify-center transition"
+                      title="Löschen">
+                ×
+              </button>
+            </span>
+          } @empty {
+            <div class="w-full text-center py-8 border-2 border-dashed border-slate-700 rounded-lg">
+              <p class="text-slate-500 text-sm">Keine Skills vorhanden.</p>
+              <p class="text-slate-600 text-xs">Füge oben welche hinzu!</p>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>

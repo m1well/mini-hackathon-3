@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://mh3-backend:8087',
+  apiUrl: 'https://custos.m1well.com/mh3',
 };
